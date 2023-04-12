@@ -24,8 +24,6 @@ public class MainGame {
 	int turns = 0;
 
 	public static void main(String[]args){
-		System.out.println("Kareen wuz  here");
-		System.out.println("David sucks");
 		new MainGame();
 	}
 
