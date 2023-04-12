@@ -99,9 +99,9 @@ public class MainGame {
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(shinyRock);
-		roomMap.get("Hornet's Hideout").itemList.add(dash);
-		roomMap.get("Fungal Wastes").itemList.add(fungi);
-		roomMap.get("City of Tears").itemList.add(flashlight);
+		//roomMap.get("Hornet's Hideout").itemList.add(dash);
+		//roomMap.get("Fungal Wastes").itemList.add(fungi);
+		//roomMap.get("City of Tears").itemList.add(flashlight);
 		
 		inventory.add("nail");
 		
@@ -175,6 +175,9 @@ public class MainGame {
 		case "help":
 			printHelp();
 			break;
+		case "look":
+			lookAtRoom(true);
+			break;
 
 			/**** two word commands ****/		
 		case "read":
@@ -188,7 +191,7 @@ public class MainGame {
 			// ...		
 
 		default: 
-			System.out.println("Sorry, I don't understand that command");
+			System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
 		}
 		return true;
 	}	
@@ -200,7 +203,9 @@ public class MainGame {
 	}	
 
 	void lookAtRoom(boolean playing) {
-
+		
+		System.out.println(roomMap.get(currentRoom));
+		
 	}
 
 	void moveToRoom(char direction) {
@@ -209,7 +214,7 @@ public class MainGame {
 
 	void pickUpItem(String object) {
 
-		//inventory.put(object);
+		
 
 	}
 
@@ -217,9 +222,8 @@ public class MainGame {
 
 		System.out.println("Current inventory:");
 		for (int i = 0; i < inventory.size(); i++) {
-
+			System.out.println(inventory.get(i).toString());
 		}
-
 	}
 
 	void sleep() {
@@ -227,11 +231,21 @@ public class MainGame {
 	}
 
 	void printHelp() {
-
+		
+		System.out.println("Here are all of your controls: \n-----------------------------");
+		System.out.println("n/north - go north             s/south - go south");
+		System.out.println("e/east - go east               w/west - go west");
+		System.out.println("u - go up                      d - go down");
+		System.out.println("i/inventory - shows inventory  pickup/take - pick up item in current location");
+		System.out.println("read - read object (only applies to special objects with this property)");
+		System.out.println("eat - eat item (only applies to special objects with this property)");
+		
 	}
 
 	void readObject(String objectRead) {
-
+		
+		
+		
 	}
 
 	void eatItem(String itemRead) {

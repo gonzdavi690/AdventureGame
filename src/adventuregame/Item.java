@@ -8,6 +8,7 @@ public class Item {
 	boolean isCarryable = true;
 	int healthPoints;
 	boolean isActivated;
+	boolean isReadable;
 	
 	Item(){}
 	
