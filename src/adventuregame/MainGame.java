@@ -12,8 +12,8 @@ public class MainGame {
 	static int INVSIZE = 10; //size of inventory	
 
 	//instance variables
-	HashMap<String,Room> roomList = new HashMap<String,Room>();
-	HashMap<String, Item> itemList = new HashMap<String,Item>(); //list of all item objects
+	HashMap<String,Room> roomMap = new HashMap<String,Room>();
+	HashMap<String, Item> itemMap = new HashMap<String,Item>(); //list of all item objects
 	//These hashmaps could also be in the Room and Item class if it's more convenient to create them there. They would have to be static though.
 
 	//the inventory could be an array
@@ -54,9 +54,57 @@ public class MainGame {
 	}
 
 	void setup() {
-		Room.setupRooms(roomList);
-		// ... more stuff ...
+		
+		Room.setupRooms(roomMap);
 		currentRoom = "clearing";
+
+		//this part sets up all of the items in the game
+		Item key = new Item("key");
+		key.descr = "Simple key that can be used to open a door";
+		key.isCarryable = true;
+
+		Item shinyRock = new Item("rock");
+		shinyRock.descr = "A strange shiny rock... seems like it can be broken";
+		shinyRock.isCarryable = false;
+		shinyRock.healthPoints = 1;
+		
+		Item nail = new Item("nail");
+		nail.descr = "A traditional weapon of HallowNest. Its blade is blunt with age and wear.";
+		nail.damage = 1;
+		
+		Item dash = new Item("dash");
+		dash.descr = "A cloak that grants the user the power to dash a short distance forward.";
+		dash.isCarryable = true;
+		
+		Item fungi = new Item("fungi");
+		fungi.descr = "Glowing fungi that seem yummy. You should try it.";
+		fungi.isCarryable = true;
+		fungi.isActivated = false;
+		
+		Item flashlight = new Item("flashlight");
+		flashlight.descr = "A magical glowing stick that allows you to see in the dark";
+		flashlight.isCarryable = true;
+		flashlight.isActivated = false;
+		
+		Item dreamNail = new Item("dreamnail");
+		dreamNail.descr = "Allows the wielder to cut through the veil between dreams and waking. Can be used to reveal hidden dreams or open gateways";
+		dreamNail.isCarryable = true;
+
+		itemMap.put("key", key);
+		itemMap.put("rock", shinyRock);
+		itemMap.put("nail", nail);
+		itemMap.put("dash", dash);
+		itemMap.put("fungi", fungi);
+		itemMap.put("flashlight", flashlight);
+
+		roomMap.get("Sly's shop").itemList.add(key);
+		roomMap.get("Forgotten Crossroads").itemList.add(shinyRock);
+		roomMap.get("Hornet's Hideout").itemList.add(dash);
+		roomMap.get("Fungal Wastes").itemList.add(fungi);
+		roomMap.get("City of Tears").itemList.add(flashlight);
+		
+		inventory.add("nail");
+		
 	}
 
 
@@ -70,24 +118,20 @@ public class MainGame {
 
 
 	String preProcess(String text) {
-		//Step1.
+
 		text = text.toLowerCase().trim();
 
-		//Step1. word replacement
 		text = text.replaceAll(" into ", " in ");
 		text = text.replaceAll(" rocks", " rock");
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 
-		//Step3. remove "the" and "a" and "an"
-		// ...
-		
 		return text;
 	}
 
 	boolean parseCommand(String text) {
-		
+
 		//handle situation where no words entered ...
 
 		String words[] = text.split(" ");
@@ -98,7 +142,7 @@ public class MainGame {
 		if (words.length>1) {
 			word2 = words[1];
 		} 
-		  //But we have to make sure that this array element exists
+		//But we have to make sure that this array element exists
 
 		/***** MAIN PROCESSING *****/
 		switch(word1) {
@@ -119,14 +163,20 @@ public class MainGame {
 		case "i": case "inventory":
 			showInventory();
 			break;
+		case "pickup": case "take": 
+			pickUpItem(word2);
+			break;
 		case "sleep":
 			sleep();			
-			break;	
+			break;
+		case "attack":
+			attack(word2);
+			break;
 		case "help":
 			printHelp();
 			break;
 
-		/**** two word commands ****/		
+			/**** two word commands ****/		
 		case "read":
 			readObject(word2);
 			break;
@@ -134,7 +184,7 @@ public class MainGame {
 			eatItem(word2);
 			break;		
 
-		/**** SPECIAL COMMANDS ****/
+			/**** SPECIAL COMMANDS ****/
 			// ...		
 
 		default: 
@@ -144,35 +194,49 @@ public class MainGame {
 	}	
 
 	//tons of other methods go here ...	
-	
+
+	void attack(String word2) {
+
+	}	
+
 	void lookAtRoom(boolean playing) {
-		
+
 	}
-	
+
 	void moveToRoom(char direction) {
-		
+
 	}
-	
+
+	void pickUpItem(String object) {
+
+		//inventory.put(object);
+
+	}
+
 	void showInventory() {
-		
+
+		System.out.println("Current inventory:");
+		for (int i = 0; i < inventory.size(); i++) {
+
+		}
+
 	}
-	
+
 	void sleep() {
-		
+
 	}
-	
+
 	void printHelp() {
-		
+
 	}
-	
+
 	void readObject(String objectRead) {
-		
+
 	}
-	
+
 	void eatItem(String itemRead) {
-		
+
 	}
 
 }
 
-  
