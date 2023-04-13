@@ -59,7 +59,7 @@ class Room {
 		r = new Room("FORGOTTEN CROSSROADS", "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain."
 				+ "Right beside you, there is a large shiny rock. It looks interesting  "
 				+ "Directly west there is a door which is locked" + "Directly south there is a wall" + "To the east, a narrow and pìtch black passage begins."); 
-		r.setExits("", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
+		r.setExits("Temple Of The Black Egg", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
 		roomList.put("Forgotten Crossroads", r);
 
 		r = new Room("GREENPATH", "These lively part of the kingdom is filled with blooming flowers and growing vegetation. There is a bench. Right in the middle, there is a glowing cloak. It is guarded by Hornet, Hallownest's protector."
@@ -87,5 +87,10 @@ class Room {
 				+ "The only exit is up. " ); 
 		r.setExits("", "", "", "", "Fungal Wastes", "");
 		roomList.put("Deepnest", r);
+		
+		r = new Room("TEMPLE OF THE BLACK EGG", "A large empty room with what seems to be a huge egg in the middle. There are three masks carved on it, of each of the three dreamers. There is a bench"
+				+ "The only exit is south. " ); 
+		r.setExits("", "Forgotten Crossroads", "", "", "", "");
+		roomList.put("Temple Of The Black Egg", r);
 	}
 }
