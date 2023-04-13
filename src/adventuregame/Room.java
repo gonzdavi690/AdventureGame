@@ -48,7 +48,7 @@ class Room {
 				" There is a bench. To the north there is a bulding with a locked door and a sign that says: shop coming soon." 
 				+ "There is a large well to the with a rope set up for travellers who venture down into the kindom, none of which have returned.");
 		//          N S W E U D
-		r.setExits("Shop", "", "", "", "", "Forgotten Crossroads");
+		r.setExits("Sly's shop", "", "", "", "", "Forgotten Crossroads");
 		roomList.put("Dirtmouth", r);
 
 		r = new Room("Sly's shop", "For sale: Simple Key - 100 geo /  "
