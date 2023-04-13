@@ -19,7 +19,7 @@ public class MainGame {
 	//the inventory could be an array
 	ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
-	Player player;
+	Player player = new Player();
 
 	int turns = 0;
 
@@ -67,6 +67,7 @@ public class MainGame {
 		shinyRock.descr = "A strange shiny rock... seems like it can be broken";
 		shinyRock.isCarryable = false;
 		shinyRock.healthPoints = 1;
+		shinyRock.isAttackable = true;
 
 		Item nail = new Item("nail");
 		nail.descr = "A traditional weapon of HallowNest. Its blade is blunt with age and wear.";
@@ -177,7 +178,7 @@ public class MainGame {
 			break;
 
 			/**** two word commands ****/		
-		case "read":
+		case "examine":
 			examineObject(word2);
 			break;
 		case "eat":
@@ -196,6 +197,18 @@ public class MainGame {
 	//tons of other methods go here ...	
 
 	void attack(String word2) {
+
+		if (itemMap.get(word2).isAttackable == true) {
+			itemMap.get(word2).healthPoints--;
+		} 
+		if (itemMap.get(word2).healthPoints == 0) {
+			System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
+			if (word2.equals("rock")) {
+				player.geo = 100;
+				inventory.add("100 geo");
+			}
+			itemMap.remove(word2);
+		}
 
 	}	
 
@@ -218,7 +231,7 @@ public class MainGame {
 		currentRoom = newRoom;
 		System.out.println(roomMap.get(newRoom).getTitle());
 		System.out.println(roomMap.get(newRoom).getDesc());
-		
+
 	}
 
 	void pickUpItem(String object) {
