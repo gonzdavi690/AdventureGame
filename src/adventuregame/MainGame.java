@@ -160,7 +160,7 @@ public class MainGame {
 		case "north": case "south": case "west": case "east": case "up": case "down":
 			moveToRoom(word1.charAt(0));
 			break;
-		case "i": case "inventory":
+		case "i": case "inventory": 
 			showInventory();
 			break;
 		case "pickup": case "take": 
