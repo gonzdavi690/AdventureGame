@@ -5,6 +5,7 @@ public class Player {
 	boolean alive = true;
 	int geo = 0;
 	
-	Player(){}
-	
+	Player(){
+		this.geo = geo;
+	}
 }

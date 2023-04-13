@@ -2,13 +2,13 @@ package adventuregame;
 
 public class Item {
 	
-	int damage;
 	String name;
 	String descr;
-	boolean isCarryable = true;
+	int damage;
 	int healthPoints;
-	boolean isActivated;
-	boolean isReadable;
+	boolean isAttackable = false;
+	boolean isCarryable = true;
+	boolean isActivated = false;
 	
 	Item(){}
 	
