@@ -12,7 +12,12 @@ public class Item {
 	
 	Item(){}
 	
-	Item(String name){
+	
+	Item (String name) {
 		this.name = name;
+	}
+	Item(String name, String description){
+		this.name = name;
+		this.descr = description;
 	}
 }

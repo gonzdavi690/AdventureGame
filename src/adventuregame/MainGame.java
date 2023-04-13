@@ -61,7 +61,10 @@ public class MainGame {
 		//this part sets up all of the items in the game
 		Item key = new Item("key");
 		key.descr = "Simple key that can be used to open a door";
-		key.isCarryable = true;
+		
+		Item door = new Item("key");
+		door.descr = "A common door made of strong material. It has a lock that fits a simple key.";
+		door.isCarryable = false;
 
 		Item shinyRock = new Item("rock");
 		shinyRock.descr = "A strange shiny rock... seems like it can be broken";
@@ -91,6 +94,7 @@ public class MainGame {
 		dreamNail.isCarryable = true;
 
 		itemMap.put("key", key);
+		itemMap.put("door", door);
 		itemMap.put("rock", shinyRock);
 		itemMap.put("nail", nail);
 		itemMap.put("dash", dash);
@@ -98,6 +102,7 @@ public class MainGame {
 		itemMap.put("flashlight", flashlight);
 
 		roomMap.get("Sly's shop").itemList.add(key);
+		roomMap.get("Forgotten Crossroads").itemList.add(door);
 		roomMap.get("Forgotten Crossroads").itemList.add(shinyRock);
 		roomMap.get("Greenpath").itemList.add(dash);
 		roomMap.get("Fungal Wastes").itemList.add(fungi);
