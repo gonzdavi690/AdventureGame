@@ -17,7 +17,6 @@ class Room {
 		description = d;
 	}
 
-	//FIXME should this be private?
 	private void setExits(String N, String S, String W, String E, String U, String D) {
 		this.N = N;
 		this.S = S;
@@ -57,8 +56,8 @@ class Room {
 		roomList.put("Sly's shop", r);
 
 		r = new Room("FORGOTTEN CROSSROADS", "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain."
-				+ "Right beside you, there is a large shiny rock. It looks interesting  "
-				+ "Directly west there is a door which is locked" + "Directly south there is a wall" + "To the east, a narrow and pìtch black passage begins."); 
+				+ "Right beside you, there is a large shiny rock. It looks interesting. "
+				+ "Directly west there is a door which is locked. " + "Directly south there is a wall. " + "To the east, a narrow and pitch black passage begins."); 
 		r.setExits("Temple Of The Black Egg", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
 		roomList.put("Forgotten Crossroads", r);
 

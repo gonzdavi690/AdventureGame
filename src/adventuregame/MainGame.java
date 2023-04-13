@@ -54,9 +54,9 @@ public class MainGame {
 	}
 
 	void setup() {
-		
+
 		Room.setupRooms(roomMap);
-		currentRoom = "clearing";
+		currentRoom = "Dirtmouth";
 
 		//this part sets up all of the items in the game
 		Item key = new Item("key");
@@ -67,25 +67,25 @@ public class MainGame {
 		shinyRock.descr = "A strange shiny rock... seems like it can be broken";
 		shinyRock.isCarryable = false;
 		shinyRock.healthPoints = 1;
-		
+
 		Item nail = new Item("nail");
 		nail.descr = "A traditional weapon of HallowNest. Its blade is blunt with age and wear.";
 		nail.damage = 1;
-		
+
 		Item dash = new Item("dash");
 		dash.descr = "A cloak that grants the user the power to dash a short distance forward.";
 		dash.isCarryable = true;
-		
+
 		Item fungi = new Item("fungi");
 		fungi.descr = "Glowing fungi that seem yummy. You should try it.";
 		fungi.isCarryable = true;
 		fungi.isActivated = false;
-		
+
 		Item flashlight = new Item("flashlight");
 		flashlight.descr = "A magical glowing stick that allows you to see in the dark";
 		flashlight.isCarryable = true;
 		flashlight.isActivated = false;
-		
+
 		Item dreamNail = new Item("dreamnail");
 		dreamNail.descr = "Allows the wielder to cut through the veil between dreams and waking. Can be used to reveal hidden dreams or open gateways";
 		dreamNail.isCarryable = true;
@@ -99,12 +99,12 @@ public class MainGame {
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(shinyRock);
-		//roomMap.get("Hornet's Hideout").itemList.add(dash);
-		//roomMap.get("Fungal Wastes").itemList.add(fungi);
-		//roomMap.get("City of Tears").itemList.add(flashlight);
-		
+		roomMap.get("Greenpath").itemList.add(dash);
+		roomMap.get("Fungal Wastes").itemList.add(fungi);
+		roomMap.get("City of Tears").itemList.add(flashlight);
+
 		inventory.add("nail");
-		
+
 	}
 
 
@@ -139,7 +139,7 @@ public class MainGame {
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
 		String word2 = "";
-		if (words.length>1) {
+		if (words.length > 1) {
 			word2 = words[1];
 		} 
 		//But we have to make sure that this array element exists
@@ -166,9 +166,6 @@ public class MainGame {
 		case "pickup": case "take": 
 			pickUpItem(word2);
 			break;
-		case "sleep":
-			sleep();			
-			break;
 		case "attack":
 			attack(word2);
 			break;
@@ -181,7 +178,7 @@ public class MainGame {
 
 			/**** two word commands ****/		
 		case "read":
-			readObject(word2);
+			examineObject(word2);
 			break;
 		case "eat":
 			eatItem(word2);
@@ -203,18 +200,30 @@ public class MainGame {
 	}	
 
 	void lookAtRoom(boolean playing) {
-		
-		System.out.println(roomMap.get(currentRoom));
-		
+
+		System.out.println(roomMap.get(currentRoom).getTitle());
+		System.out.println(roomMap.get(currentRoom).getDesc());
+
 	}
 
 	void moveToRoom(char direction) {
 
+		String newRoom = roomMap.get(currentRoom).getExit(direction);
+
+		if (currentRoom.length() == 0) {
+			System.out.println("You can't go there.");
+			return;
+		}
+
+		currentRoom = newRoom;
+		System.out.println(roomMap.get(newRoom).getTitle());
+		System.out.println(roomMap.get(newRoom).getDesc());
+		
 	}
 
 	void pickUpItem(String object) {
 
-		
+
 
 	}
 
@@ -226,12 +235,8 @@ public class MainGame {
 		}
 	}
 
-	void sleep() {
-
-	}
-
 	void printHelp() {
-		
+
 		System.out.println("Here are all of your controls: \n-----------------------------");
 		System.out.println("n/north - go north             s/south - go south");
 		System.out.println("e/east - go east               w/west - go west");
@@ -239,13 +244,13 @@ public class MainGame {
 		System.out.println("i/inventory - shows inventory  pickup/take - pick up item in current location");
 		System.out.println("read - read object (only applies to special objects with this property)");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
-		
+
 	}
 
-	void readObject(String objectRead) {
-		
-		
-		
+	void examineObject(String objectRead) {
+
+
+
 	}
 
 	void eatItem(String itemRead) {
