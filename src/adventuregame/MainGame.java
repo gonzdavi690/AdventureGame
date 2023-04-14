@@ -252,7 +252,6 @@ public class MainGame {
 			inventory.add(object);
 		}
 		System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
-		System.out.println("my balls are itchy");
 	}
 
 	void attack(String word2) {

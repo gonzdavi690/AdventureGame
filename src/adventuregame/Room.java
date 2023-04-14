@@ -8,6 +8,7 @@ class Room {
 	private String title;
 	private String description;	
 	private String N,S,E,W,U,D;
+	private boolean locked;
 
 	// items in this room FIXME (should this be private?)
 	ArrayList<Item> itemList = new ArrayList<Item>();
