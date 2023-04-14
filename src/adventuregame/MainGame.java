@@ -223,9 +223,6 @@ public class MainGame {
 		case "look":
 			lookAtRoom();
 			break;
-		case "buy":
-			buyObject(word2);
-			break;
 
 			/**** two word commands ****/		
 		case "examine":
@@ -233,7 +230,10 @@ public class MainGame {
 			break;
 		case "eat":
 			eatItem(word2);
-			break;		
+			break;
+		case "buy":
+			buyObject(word2);
+			break;
 
 			/**** SPECIAL COMMANDS ****/
 			// ...		
@@ -271,10 +271,8 @@ public class MainGame {
 	}	
 
 	void lookAtRoom() {
-
 		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
 		System.out.println(roomMap.get(currentRoom).getDesc());
-		
 	}
 
 	void moveToRoom(char direction) {
@@ -328,7 +326,7 @@ public class MainGame {
 
 	void eatItem(String itemRead) {
 
-
+		
 
 	}
 

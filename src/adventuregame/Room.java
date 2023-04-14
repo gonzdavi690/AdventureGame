@@ -8,14 +8,15 @@ class Room {
 	private String title;
 	private String description;	
 	private String N,S,E,W,U,D;
-	private boolean locked;
+	static boolean locked;
 
 	// items in this room FIXME (should this be private?)
 	ArrayList<Item> itemList = new ArrayList<Item>();
 
-	Room(String t, String d) {
+	Room(String t, String d, boolean locked) {
 		title = t;
 		description = d;
+		this.locked = locked;
 	}
 
 	private void setExits(String N, String S, String W, String E, String U, String D) {
@@ -46,24 +47,24 @@ class Room {
 	static void setupRooms(HashMap<String,Room> roomList) {
 		Room r = new Room("DIRTMOUTH", "A once lively village that has since fallen silent. A sickly air fills the place." + 
 				" There is a bench. To the north there is an old shop - seems like it's worth checking out. " 
-				+ "There is a large well to the with a rope set up for travellers who venture down into the kindom, none of which have returned.");
+				+ "There is a large well to the with a rope set up for travellers who venture down into the kindom, none of which have returned.", false);
 		//          N S W E U D
 		r.setExits("Sly's shop", "", "", "", "", "Forgotten Crossroads");
 		roomList.put("Dirtmouth", r);
 
 		r = new Room("SLY'S SHOP", "For sale: Simple Key - 100 geo /  "
-				+ "The exit is back south");
+				+ "The exit is back south", false);
 		r.setExits("", "Dirtmouth", "", "", "", "");
 		roomList.put("Sly's shop", r);
 
 		r = new Room("FORGOTTEN CROSSROADS", "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain. "
 				+ "Right beside you, there is a large shiny rock. It looks interesting. " + "To the North, there is a wide passage to another room."
-				+ "Directly west there is a door which is locked. " + "Directly south there is a wall. " + "To the east, a narrow and pitch black passage begins."); 
+				+ "Directly west there is a door which is locked. " + "Directly south there is a wall. " + "To the east, a narrow and pitch black passage begins.", false); 
 		r.setExits("Temple Of The Black Egg", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
 		roomList.put("Forgotten Crossroads", r);
 
 		r = new Room("GREENPATH", "This lively part of the kingdom is filled with blooming flowers and growing vegetation. There is a bench. Right in the middle, there is a glowing cloak. It is guarded by Hornet, Hallownest's protector."
-				+ "She will not give it up without a good fight." + "To the south, there is a path that has a large gap." + "To the east there is a opened door "); 
+				+ "She will not give it up without a good fight." + "To the south, there is a path that has a large gap." + "To the east there is a opened door ", true); 
 		r.setExits("", "Fungal Wastes", "", "Forgotten Crossroads", "", "");
 		roomList.put("Greenpath", r);
 
