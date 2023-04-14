@@ -230,9 +230,15 @@ public class MainGame {
 			break;
 		case "eat":
 			eatItem(word2);
+<<<<<<< HEAD
 			break;
 		case "buy":
 			buyObject(word2);
+=======
+			break;	
+		case "open":
+			openDoor(word2);
+>>>>>>> master
 			break;
 
 			/**** SPECIAL COMMANDS ****/
@@ -326,8 +332,18 @@ public class MainGame {
 
 	void eatItem(String itemRead) {
 
+<<<<<<< HEAD
 		
 
+=======
+	}
+	
+	void openDoor(String item) {
+		
+		if (item.equals("door")) {
+			
+		}
+>>>>>>> master
 	}
 
 }
