@@ -73,20 +73,28 @@ public class MainGame {
 		shinyRock.isAttackable = true;
 
 		Item nail = new Item("nail");
-		nail.descr = "A traditional weapon of HallowNest. Its blade is blunt with age and wear.";
+		nail.descr = "A traditional weapon of Hallownest. Its blade is blunt with age and wear.";
 		nail.damage = 1;
 
-		Item dash = new Item("dash");
-		dash.descr = "A cloak that grants the user the power to dash a short distance forward.";
-		dash.isCarryable = true;
+		Item cloak = new Item("cloak");
+		cloak.descr = "A cloak that grants the user the power to dash a short distance forward.";
+		cloak.isCarryable = true;
 
 		Item fungi = new Item("fungi");
 		fungi.descr = "Glowing fungi that seem yummy. You should try it.";
 		fungi.isCarryable = true;
 		fungi.isActivated = false;
+		
+		Item sign = new Item("sign");
+		sign.descr = "Nothing special about it. Just a regular sign warning explorers of dangers beneath. ";
+		sign.isCarryable = false;
 
+		Item supplies = new Item ("supplies");
+		supplies.descr = "Some scattered supplies from previous explorers. Among them there is a flashlght. ";
+		//!TODO if the player inputs take supplies, say "you have to be more specific, which supply do you want to take?"
+		
 		Item flashlight = new Item("flashlight");
-		flashlight.descr = "A magical glowing stick that allows you to see in the dark";
+		flashlight.descr = "A common flashlight that allows you to see in the dark";
 		flashlight.isCarryable = true;
 		flashlight.isActivated = false;
 
@@ -98,16 +106,21 @@ public class MainGame {
 		itemMap.put("door", door);
 		itemMap.put("rock", shinyRock);
 		itemMap.put("nail", nail);
-		itemMap.put("dash", dash);
+		itemMap.put("cloak", cloak);
 		itemMap.put("fungi", fungi);
+		itemMap.put("sign", sign);
+		itemMap.put("supplies", supplies);
 		itemMap.put("flashlight", flashlight);
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(door);
 		roomMap.get("Forgotten Crossroads").itemList.add(shinyRock);
-		roomMap.get("Greenpath").itemList.add(dash);
+		roomMap.get("Greenpath").itemList.add(cloak);
 		roomMap.get("Fungal Wastes").itemList.add(fungi);
+		roomMap.get("Fungal Wastes").itemList.add(sign);
+		roomMap.get("City of Tears").itemList.add(supplies);
 		roomMap.get("City of Tears").itemList.add(flashlight);
+		roomMap.get("Resting Grounds").itemList.add(dreamNail);
 
 		inventory.add("nail");
 

@@ -56,13 +56,13 @@ class Room {
 		roomList.put("Sly's shop", r);
 
 		r = new Room("FORGOTTEN CROSSROADS", "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain."
-				+ "Right beside you, there is a large shiny rock. It looks interesting. "
+				+ "Right beside you, there is a large shiny rock. It looks interesting. " + "To the North, there is a wide passage to another room."
 				+ "Directly west there is a door which is locked. " + "Directly south there is a wall. " + "To the east, a narrow and pitch black passage begins."); 
 		r.setExits("Temple Of The Black Egg", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
 		roomList.put("Forgotten Crossroads", r);
 
 		r = new Room("GREENPATH", "These lively part of the kingdom is filled with blooming flowers and growing vegetation. There is a bench. Right in the middle, there is a glowing cloak. It is guarded by Hornet, Hallownest's protector."
-				+ "She will not give it up without a good fight." + "To the south, there is a path that has a large gap." + "To the east there is a opened door to the Forgotten Crossroads"); 
+				+ "She will not give it up without a good fight." + "To the south, there is a path that has a large gap." + "To the east there is a opened door "); 
 		r.setExits("", "Fungal Wastes", "", "Forgotten Crossroads", "", "");
 		roomList.put("Greenpath", r);
 
