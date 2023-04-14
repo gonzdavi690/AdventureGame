@@ -101,6 +101,24 @@ public class MainGame {
 		Item dreamNail = new Item("dreamnail");
 		dreamNail.descr = "Allows the wielder to cut through the veil between dreams and waking. Can be used to reveal hidden dreams or open gateways";
 		dreamNail.isCarryable = true;
+		
+		Item lurien = new Item ("lurien the watcher");
+		lurien.descr = "Lurien the watcher one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		lurien.isCarryable = false;
+		
+		Item monomon = new Item ("monomon the teacher");
+		monomon.descr = "Monomon the teacher is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		monomon.isCarryable = false;
+		
+		Item herrah = new Item ("herrah the beast");
+		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		herrah.isCarryable = false;
+		
+		Item blackEgg = new Item ("black egg");
+		blackEgg.descr = "A large black egg, looks like something mysterious lies inside. "
+				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force";
+		blackEgg.isCarryable = false;
+
 
 		itemMap.put("key", key);
 		itemMap.put("door", door);
@@ -111,6 +129,10 @@ public class MainGame {
 		itemMap.put("sign", sign);
 		itemMap.put("supplies", supplies);
 		itemMap.put("flashlight", flashlight);
+		itemMap.put("lurien the watcher", lurien);
+		itemMap.put("monomon the teacher", monomon);
+		itemMap.put("herrah the beast", herrah);
+		itemMap.put("black egg", blackEgg);
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(door);
@@ -120,7 +142,11 @@ public class MainGame {
 		roomMap.get("Fungal Wastes").itemList.add(sign);
 		roomMap.get("City of Tears").itemList.add(supplies);
 		roomMap.get("City of Tears").itemList.add(flashlight);
+		roomMap.get("City of Tears").itemList.add(lurien);
 		roomMap.get("Resting Grounds").itemList.add(dreamNail);
+		roomMap.get("Resting Grounds").itemList.add(monomon);
+		roomMap.get("Deepnest").itemList.add(herrah);
+		roomMap.get("Temple Of The Black Egg").itemList.add(blackEgg);
 
 		inventory.add("nail");
 
