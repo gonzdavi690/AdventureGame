@@ -10,7 +10,7 @@ public class Item {
 	boolean isCarryable = true;
 	boolean isActivated = false;
 	
-	String getDesc() {return descr;}
+	String getDescr() {return descr;}
 	String getName() {return name;}	
 	
 	Item(){}

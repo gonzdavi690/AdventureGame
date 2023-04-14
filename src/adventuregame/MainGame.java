@@ -34,7 +34,7 @@ public class MainGame {
 
 		setup(); //create all objects needed, including map; print intro. message
 
-		lookAtRoom(true); //display information about the current room
+		lookAtRoom(); //display information about the current room
 
 		/***** MAIN GAME LOOP *****/
 		while (playing) {
@@ -61,7 +61,7 @@ public class MainGame {
 		//this part sets up all of the items in the game
 		Item key = new Item("key");
 		key.descr = "Simple key that can be used to open a door";
-		
+
 		Item door = new Item("key");
 		door.descr = "A common door made of strong material. It has a lock that fits a simple key.";
 		door.isCarryable = false;
@@ -84,7 +84,7 @@ public class MainGame {
 		fungi.descr = "Glowing fungi that seem yummy. You should try it.";
 		fungi.isCarryable = true;
 		fungi.isActivated = false;
-		
+
 		Item sign = new Item("sign");
 		sign.descr = "Nothing special about it. Just a regular sign warning explorers of dangers beneath. ";
 		sign.isCarryable = false;
@@ -92,7 +92,7 @@ public class MainGame {
 		Item supplies = new Item ("supplies");
 		supplies.descr = "Some scattered supplies from previous explorers. Among them there is a flashlght. ";
 		//!TODO if the player inputs take supplies, say "you have to be more specific, which supply do you want to take?"
-		
+
 		Item flashlight = new Item("flashlight");
 		flashlight.descr = "A common flashlight that allows you to see in the dark";
 		flashlight.isCarryable = true;
@@ -121,6 +121,9 @@ public class MainGame {
 		roomMap.get("City of Tears").itemList.add(supplies);
 		roomMap.get("City of Tears").itemList.add(flashlight);
 		roomMap.get("Resting Grounds").itemList.add(dreamNail);
+
+		System.out.println("Greetings, player! Welcome to Hollow Knight. You will have to navigate through the terrain starting from dirtmouth. You will find that I've put a little parting gift in your inventory, you should go check it out. Anyway, I won't keep you here any longer traveller, but you can call on me anytime whenever you need 'help' >:)\n");
+
 
 		inventory.add("nail");
 
@@ -192,7 +195,10 @@ public class MainGame {
 			printHelp();
 			break;
 		case "look":
-			lookAtRoom(true);
+			lookAtRoom();
+			break;
+		case "buy":
+			buyObject(word2);
 			break;
 
 			/**** two word commands ****/		
@@ -214,6 +220,15 @@ public class MainGame {
 
 	//tons of other methods go here ...	
 
+	void buyObject(String object) {
+		
+		if (player.geo >= 100) {
+			inventory.add(object);
+		}
+		System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
+		
+	}
+
 	void attack(String word2) {
 
 		if (itemMap.get(word2).isAttackable == true) {
@@ -230,25 +245,23 @@ public class MainGame {
 
 	}	
 
-	void lookAtRoom(boolean playing) {
+	void lookAtRoom() {
 
-		System.out.println(roomMap.get(currentRoom).getTitle());
+		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
 		System.out.println(roomMap.get(currentRoom).getDesc());
-
+		
 	}
 
 	void moveToRoom(char direction) {
 
 		String newRoom = roomMap.get(currentRoom).getExit(direction);
 
-		if (currentRoom.length() == 0) {
+		if (newRoom.length() == 0) {
 			System.out.println("You can't go there.");
 			return;
 		}
-
 		currentRoom = newRoom;
-		System.out.println(roomMap.get(newRoom).getTitle());
-		System.out.println(roomMap.get(newRoom).getDesc());
+		lookAtRoom();
 
 	}
 
@@ -263,6 +276,7 @@ public class MainGame {
 	void showInventory() {
 
 		System.out.println("Current inventory:");
+		System.out.println("-----------------");
 		for (int i = 0; i < inventory.size(); i++) {
 			System.out.println(inventory.get(i).toString());
 		}
@@ -283,14 +297,14 @@ public class MainGame {
 	void examineObject(String objectRead) {
 
 		System.out.println(itemMap.get(objectRead).getName());
-		System.out.println(itemMap.get(objectRead).getDesc());
+		System.out.println(itemMap.get(objectRead).getDescr());
 
 	}
 
 	void eatItem(String itemRead) {
-		
-		
-		
+
+
+
 	}
 
 }
