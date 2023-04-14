@@ -71,21 +71,20 @@ class Room {
 		r.setExits("Greenpath", "", "", "City of Tears", "", "Deepnest");
 		roomList.put("Fungal Wastes", r);
 
-<<<<<<< HEAD
+
 		r = new Room("CITY OF TEARS", "Welcome to the capital city of Hallownest. Due to being located under the Blue Lake, it is always raining. There is a silver bench. Among all this luxury there is a statue of Lurien the Watcher. "
 				+ "Nearby, the remaining supplies of a past explorer can be found. " + "There is a small exit north that takes you through a secret pathway. " + "West is Fungal Wastes."); 
 		r.setExits("Forgotten Crossroads", "", "Fungal Wastes", "", "", "");
 		roomList.put("City of Tears", r);
 
-		r = new Room("RESTING GROUNDS", "This serene, sacred area used to be where inhabitants of Hallownest conducted rituals for the dead. Laying on the ground there is a pink dream nail. Right beside it, the statue of Monomon the Teacher stands, glowing pink. " 
-=======
+		r = new Room("RESTING GROUNDS", "This serene, sacred area used to be where inhabitants of Hallownest conducted rituals for the dead. Laying on the ground there is a pink dream nail. Right beside it, the statue of Monomon the Teacher stands, glowing pink. "); 
+
 		r = new Room("CITY OF TEARS", "Welcome to the capital city of Hallownest. Due to being located under the Blue Lake, it is always raining. There is a silver bench. Among all this luxury there is a Lurien the Watcher resides, deep asleep. "
 				+ "Nearby, the remaining supplies of a past explorer can be found." + "There is a small exit north that takes you through a secret pathway." + "West is Fungal Wastes."); 
 		r.setExits("Forgotten Crossroads", "", "Fungal Wastes", "", "", "");
 		roomList.put("City of Tears", r);
 
 		r = new Room("RESTING GROUNDS", "This serene, sacred area used to be where inhabitants of Hallownest conducted rituals for the dead. Laying on the ground there is a pink dream nail. Right beside it, Monomon the Teacher is found asleep, glowing pink." 
->>>>>>> master
 				+ "To the West is a small passageway. " ); 
 		r.setExits("", "", "Forgotten Crossroads", "", "", "");
 		roomList.put("Resting Grounds", r);
