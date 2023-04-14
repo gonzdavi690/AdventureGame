@@ -233,7 +233,10 @@ public class MainGame {
 			break;
 		case "eat":
 			eatItem(word2);
-			break;		
+			break;	
+		case "open":
+			openDoor(word2);
+			break;
 
 			/**** SPECIAL COMMANDS ****/
 			// ...		
@@ -328,8 +331,13 @@ public class MainGame {
 
 	void eatItem(String itemRead) {
 
-
-
+	}
+	
+	void openDoor(String item) {
+		
+		if (item.equals("door")) {
+			
+		}
 	}
 
 }
