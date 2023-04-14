@@ -280,7 +280,9 @@ public class MainGame {
 
 	void pickUpItem(String object) {
 
-
+		if (itemMap.get(object).isCarryable) {
+			inventory.add(object);
+		}
 
 	}
 
@@ -306,12 +308,15 @@ public class MainGame {
 
 	void examineObject(String objectRead) {
 
-
+		System.out.println(itemMap.get(objectRead).getName());
+		System.out.println(itemMap.get(objectRead).getDesc());
 
 	}
 
 	void eatItem(String itemRead) {
-
+		
+		
+		
 	}
 
 }

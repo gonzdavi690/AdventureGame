@@ -10,8 +10,10 @@ public class Item {
 	boolean isCarryable = true;
 	boolean isActivated = false;
 	
-	Item(){}
+	String getDesc() {return descr;}
+	String getName() {return name;}	
 	
+	Item(){}
 	
 	Item (String name) {
 		this.name = name;
