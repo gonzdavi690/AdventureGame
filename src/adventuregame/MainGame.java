@@ -102,19 +102,19 @@ public class MainGame {
 		dreamNail.descr = "Allows the wielder to cut through the veil between dreams and waking. Can be used to reveal hidden dreams or open gateways";
 		dreamNail.isCarryable = true;
 		
-		Item lurien = new Item ("lurien the watcher");
+		Item lurien = new Item ("lurien");
 		lurien.descr = "Lurien the watcher one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		lurien.isCarryable = false;
 		
-		Item monomon = new Item ("monomon the teacher");
+		Item monomon = new Item ("monomon");
 		monomon.descr = "Monomon the teacher is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		monomon.isCarryable = false;
 		
-		Item herrah = new Item ("herrah the beast");
+		Item herrah = new Item ("herrah");
 		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		herrah.isCarryable = false;
 		
-		Item blackEgg = new Item ("black egg");
+		Item blackEgg = new Item ("egg");
 		blackEgg.descr = "A large black egg, looks like something mysterious lies inside. "
 				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force";
 		blackEgg.isCarryable = false;
@@ -129,10 +129,10 @@ public class MainGame {
 		itemMap.put("sign", sign);
 		itemMap.put("supplies", supplies);
 		itemMap.put("flashlight", flashlight);
-		itemMap.put("lurien the watcher", lurien);
-		itemMap.put("monomon the teacher", monomon);
-		itemMap.put("herrah the beast", herrah);
-		itemMap.put("black egg", blackEgg);
+		itemMap.put("lurien", lurien);
+		itemMap.put("monomon", monomon);
+		itemMap.put("herrah", herrah);
+		itemMap.put("egg", blackEgg);
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(door);
@@ -149,7 +149,7 @@ public class MainGame {
 		roomMap.get("Temple Of The Black Egg").itemList.add(blackEgg);
 
 		System.out.println("Greetings, player! Welcome to Hollow Knight. You will have to navigate through the terrain starting from dirtmouth. You will find that I've put a little parting gift in your inventory, you should go check it out. Anyway, I won't keep you here any longer traveller, but you can call on me anytime whenever you need 'help' >:)\n");
-
+		System.out.println("TIP: Please activate word wrap on your console for all the text to show up.");
 
 		inventory.add("nail");
 
@@ -174,6 +174,7 @@ public class MainGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
+		text = text.replaceAll("turn on", "turnon");
 
 		return text;
 	}
@@ -211,23 +212,26 @@ public class MainGame {
 		case "i": case "inventory": 
 			showInventory();
 			break;
-		case "pickup": case "take": 
-			pickUpItem(word2);
-			break;
-		case "attack":
-			attack(word2);
-			break;
+		
+		
 		case "help":
 			printHelp();
 			break;
 		case "look":
 			lookAtRoom();
 			break;
+		
+
+			/**** two word commands ****/	
+		case "pickup": case "take": 
+			pickUpItem(word2);
+			break;
+		case "attack":
+			attack(word2);
+			break;
 		case "buy":
 			buyObject(word2);
 			break;
-
-			/**** two word commands ****/		
 		case "examine":
 			examineObject(word2);
 			break;
@@ -236,6 +240,9 @@ public class MainGame {
 			break;	
 		case "open":
 			openDoor(word2);
+			break;
+		case "turnon":
+			turnOnItem(word2);
 			break;
 
 			/**** SPECIAL COMMANDS ****/
@@ -253,8 +260,11 @@ public class MainGame {
 		
 		if (player.geo >= 100) {
 			inventory.add(object);
+			System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
+		} else {
+			System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 		}
-		System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
+		
 	}
 
 	void attack(String word2) {
@@ -288,6 +298,18 @@ public class MainGame {
 			System.out.println("You can't go there.");
 			return;
 		}
+		if (roomMap.get(newRoom).locked) {
+			if (roomMap.get(newRoom).equals("Greenpath")) {
+				System.out.println("The door is locked. ");
+			}
+			if (roomMap.get(newRoom).equals("Fungal Wastes")) {
+				System.out.println("There is a large gap in the way, your character cannot go this way normally. ");
+			}
+			/*if (roomMap.get(newRoom).getTitle("City of Tears")) {
+				System.out.println("There is a wall that must be climbed. ");
+			}
+			*/
+		}
 		currentRoom = newRoom;
 		lookAtRoom();
 
@@ -317,26 +339,44 @@ public class MainGame {
 		System.out.println("e/east - go east               w/west - go west");
 		System.out.println("u - go up                      d - go down");
 		System.out.println("i/inventory - shows inventory  pickup/take - pick up item in current location");
-		System.out.println("read - read object (only applies to special objects with this property)");
+		System.out.println("examine - looks at object with more detail");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 
 	}
 
-	void examineObject(String objectRead) {
+	void examineObject(String item) {
 
-		System.out.println(itemMap.get(objectRead).getName());
-		System.out.println(itemMap.get(objectRead).getDescr());
-
+		System.out.println(itemMap.get(item).getName());
+		System.out.println(itemMap.get(item).getDescr());
+		//!TODO add thing that says if item isn't an item in the hashmap, print out you can't examine that
 	}
 
-	void eatItem(String itemRead) {
-
+	void eatItem(String item) {
+		
+		if (item.equals("fungi") || item.equals("fungus")) {
+			itemMap.get("fungi").isActivated = true;
+			System.out.println("You have consumed a fungus. This gives you the ability to climb certain walls. ");
+		} else {
+			System.out.println("You can't eat that. ");
+		}
 	}
 	
 	void openDoor(String item) {
 		
 		if (item.equals("door")) {
-			
+			//roomMap.get(Greenpath).isLocked = false;
+			System.out.println("The door has been unlocked. ");
+		} else {
+			System.out.println("You can't open that. ");
+		}
+	}
+	
+	void turnOnItem(String item) {
+		if (item.equals("flashlight")) {
+			itemMap.get(item).isActivated = true;
+			System.out.println("Your flashlight is now on. ");
+		} else {
+			System.out.println("You can't turn that on. ");
 		}
 	}
 
