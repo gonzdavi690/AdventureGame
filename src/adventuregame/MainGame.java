@@ -223,9 +223,7 @@ public class MainGame {
 			lookAtRoom();
 			break;
 
-<<<<<<< HEAD
 			/**** two word commands ****/		
-=======
 
 			/**** two word commands ****/	
 		case "pickup": case "take": 
@@ -234,29 +232,22 @@ public class MainGame {
 		case "attack":
 			attack(word2);
 			break;
-		case "buy":
-			buyObject(word2);
-			break;
->>>>>>> master
 		case "examine":
 			examineObject(word2);
 			break;
 		case "eat":
 			eatItem(word2);
-<<<<<<< HEAD
 			break;
 		case "buy":
 			buyObject(word2);
-=======
 			break;	
 		case "open":
 			openDoor(word2);
->>>>>>> master
 			break;
-		case "turnon":
+		case "turn on":
 			turnOnItem(word2);
 			break;
-		case "turnoff":
+		case "turn off":
 			turnOffItem(word2);
 			break;
 
@@ -272,6 +263,7 @@ public class MainGame {
 	//tons of other methods go here ...	
 
 	void buyObject(String object) {
+		
 		if (!currentRoom.equals("Sly's shop")) {
 			System.out.println("You are not in a shop. ");
 			return;
@@ -282,11 +274,11 @@ public class MainGame {
 				inventory.add(object);
 				System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
 				player.geo -= 100;
+				inventory.remove(player.geo);
 			} else {
 				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 			}
 		}
-
 		//!TODO Make it so that after you buy the key, the inventory shows you have 0 geo
 	}
 
@@ -309,10 +301,7 @@ public class MainGame {
 	void lookAtRoom() {
 		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
 		System.out.println(roomMap.get(currentRoom).getDesc());
-<<<<<<< HEAD
-=======
 
->>>>>>> master
 	}
 
 	void moveToRoom(char direction) {
@@ -383,20 +372,16 @@ public class MainGame {
 	}
 
 	void examineObject(String item) {
-
-		System.out.println(itemMap.get(item).getName());
-		System.out.println(itemMap.get(item).getDescr());
-		//!TODO add thing that says if item isn't an item in the hashmap, print out you can't examine that
+		
+		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item))) {		
+			System.out.println(itemMap.get(item).getDescr());
+		}		
+		System.out.println("You can't examine that right now.");
+		
 	}
 
 	void eatItem(String item) {
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-		
-
-=======
-=======
 		if (item.equals("fungi") || item.equals("fungus")) {
 			itemMap.get("fungi").isActivated = true;
 			roomMap.get("City of Tears").locked = false;
@@ -404,7 +389,6 @@ public class MainGame {
 		} else {
 			System.out.println("You can't eat that. ");
 		}
->>>>>>> master
 	}
 
 	void openDoor(String item) {
@@ -442,7 +426,6 @@ public class MainGame {
 		} else {
 			System.out.println("You can't turn that off. ");
 		}
->>>>>>> master
 	}
 
 }
