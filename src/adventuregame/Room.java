@@ -53,7 +53,7 @@ class Room {
 		r.setExits("Sly's shop", "", "", "", "", "Forgotten Crossroads");
 		roomList.put("Dirtmouth", r);
 
-		r = new Room(false, "SLY'S SHOP", "For sale: Simple Key - 100 geo /  "
+		r = new Room(false, "SLY'S SHOP", "For sale: Key - 100 geo. "
 				+ "The exit is back south");
 		r.setExits("", "Dirtmouth", "", "", "", "");
 		roomList.put("Sly's shop", r);
@@ -75,7 +75,7 @@ class Room {
 		roomList.put("Fungal Wastes", r);
 
 
-		r = new Room(true, "CITY OF TEARS", "Welcome to the capital city of Hallownest. Due to being located under the Blue Lake, it is always raining. There is a silver bench. Among all this luxury there is a statue of Lurien the Watcher. "
+		r = new Room(true, "CITY OF TEARS", "Welcome to the capital city of Hallownest. Due to being located under the Blue Lake, it is always raining. There is a silver bench. Among all this luxury Lurien the Watcher is found asleep. "
 				+ "Nearby, the remaining supplies of a past explorer can be found. " + "There is a small exit north that takes you through a secret pathway. " + "West is Fungal Wastes."); 
 		r.setExits("Forgotten Crossroads", "", "Fungal Wastes", "", "", "");
 		roomList.put("City of Tears", r);
@@ -86,7 +86,7 @@ class Room {
 		r.setExits("", "", "Forgotten Crossroads", "", "", "");
 		roomList.put("Resting Grounds", r);
 
-		r = new Room(false, "DEEPNEST", "The deepest area of Hallownest. In this enormous, spider infested, dark sprawl of narrow passages, Herrah the Beast, in deep rest, can be found. "
+		r = new Room(true, "DEEPNEST", "The deepest area of Hallownest. In this enormous, spider infested, dark sprawl of narrow passages, Herrah the Beast, in deep rest, can be found. "
 				+ "Don't stay for long in this area, or you will end up sharing the fate of many other travellers who thought they were brave enough to stay. " 
 				+ "The only exit is up. " ); 
 		r.setExits("", "", "", "", "Fungal Wastes", "");

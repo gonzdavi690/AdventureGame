@@ -77,7 +77,7 @@ public class MainGame {
 		nail.damage = 1;
 
 		Item cloak = new Item("cloak");
-		cloak.descr = "A cloak that grants the user the power to dash a short distance forward.";
+		cloak.descr = "A cloak that grants the user the power to dash a short distance forward, going over gaps. Type in the direction you want to go in and it will dash automatically. ";
 		cloak.isCarryable = true;
 
 		Item fungi = new Item("fungi");
@@ -91,6 +91,7 @@ public class MainGame {
 
 		Item supplies = new Item ("supplies");
 		supplies.descr = "Some scattered supplies from previous explorers. Among them there is a flashlght. ";
+		supplies.isCarryable = false;
 		//!TODO if the player inputs take supplies, say "you have to be more specific, which supply do you want to take?"
 
 		Item flashlight = new Item("flashlight");
@@ -101,19 +102,19 @@ public class MainGame {
 		Item dreamNail = new Item("dreamnail");
 		dreamNail.descr = "Allows the wielder to cut through the veil between dreams and waking. Can be used to reveal hidden dreams or open gateways";
 		dreamNail.isCarryable = true;
-		
+
 		Item lurien = new Item ("lurien");
 		lurien.descr = "Lurien the watcher one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		lurien.isCarryable = false;
-		
+
 		Item monomon = new Item ("monomon");
 		monomon.descr = "Monomon the teacher is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		monomon.isCarryable = false;
-		
+
 		Item herrah = new Item ("herrah");
 		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
 		herrah.isCarryable = false;
-		
+
 		Item blackEgg = new Item ("egg");
 		blackEgg.descr = "A large black egg, looks like something mysterious lies inside. "
 				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force";
@@ -175,6 +176,7 @@ public class MainGame {
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
 		text = text.replaceAll("turn on", "turnon");
+		text = text.replaceAll("turn off", "turnoff");
 
 		return text;
 	}
@@ -212,15 +214,15 @@ public class MainGame {
 		case "i": case "inventory": 
 			showInventory();
 			break;
-		
-		
+
+
 		case "help":
 			printHelp();
 			break;
 		case "look":
 			lookAtRoom();
 			break;
-		
+
 
 			/**** two word commands ****/	
 		case "pickup": case "take": 
@@ -244,6 +246,9 @@ public class MainGame {
 		case "turnon":
 			turnOnItem(word2);
 			break;
+		case "turnoff":
+			turnOffItem(word2);
+			break;
 
 			/**** SPECIAL COMMANDS ****/
 			// ...		
@@ -257,14 +262,22 @@ public class MainGame {
 	//tons of other methods go here ...	
 
 	void buyObject(String object) {
-		
-		if (player.geo >= 100) {
-			inventory.add(object);
-			System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
+		if (!currentRoom.equals("Sly's shop")) {
+			System.out.println("You are not in a shop. ");
+			return;
 		} else {
-			System.out.println("You don't have enough geo to purchase that. Come back soon! ");
+			if (!object.equals("key")) {
+				System.out.println("That isn't for sale at the moment. ");
+			} else if (player.geo >= 100) {
+				inventory.add(object);
+				System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
+				player.geo -= 100;
+			} else {
+				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
+			}
 		}
-		
+
+		//!TODO Make it so that after you buy the key, the inventory shows you have 0 geo
 	}
 
 	void attack(String word2) {
@@ -276,7 +289,7 @@ public class MainGame {
 			System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
 			if (word2.equals("rock")) {
 				player.geo = 100;
-				inventory.add("100 geo");
+				inventory.add("" + player.geo + " geo");
 			}
 			itemMap.remove(word2);
 		}
@@ -287,7 +300,7 @@ public class MainGame {
 
 		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
 		System.out.println(roomMap.get(currentRoom).getDesc());
-		
+
 	}
 
 	void moveToRoom(char direction) {
@@ -298,17 +311,26 @@ public class MainGame {
 			System.out.println("You can't go there.");
 			return;
 		}
+		if (inventory.contains("cloak")) {
+			roomMap.get("Fungal Wastes").locked = false;
+		}
 		if (roomMap.get(newRoom).locked) {
-			if (roomMap.get(newRoom).equals("Greenpath")) {
+			if (newRoom.equals("Greenpath")) {
 				System.out.println("The door is locked. ");
 			}
-			if (roomMap.get(newRoom).equals("Fungal Wastes")) {
+			if (newRoom.equals("Fungal Wastes")) {
 				System.out.println("There is a large gap in the way, your character cannot go this way normally. ");
 			}
-			/*if (roomMap.get(newRoom).getTitle("City of Tears")) {
-				System.out.println("There is a wall that must be climbed. ");
+			if (newRoom.equals("City of Tears")) {
+				System.out.println("There is a wall that must be climbed. You don't have that ability as of now. ");
 			}
-			*/
+			if (newRoom.equals("Resting Grounds")) {
+				System.out.println("It is too dark for you to nagivate this passage safely. You can't see anything. ");
+			}
+			if (newRoom.equals("Deepnest")) {
+				System.out.println("This area is pitch black. You can't see anything, so you can't explore it. ");
+			}
+			return;
 		}
 		currentRoom = newRoom;
 		lookAtRoom();
@@ -317,8 +339,12 @@ public class MainGame {
 
 	void pickUpItem(String object) {
 
+		if (object.equals("supplies")) {
+			System.out.println("You have to be more specific, which supply do you want to take?");
+		}
 		if (itemMap.get(object).isCarryable) {
 			inventory.add(object);
+			System.out.println("You are now carrying a " + object);
 		}
 
 	}
@@ -352,31 +378,50 @@ public class MainGame {
 	}
 
 	void eatItem(String item) {
-		
+
 		if (item.equals("fungi") || item.equals("fungus")) {
 			itemMap.get("fungi").isActivated = true;
-			System.out.println("You have consumed a fungus. This gives you the ability to climb certain walls. ");
+			roomMap.get("City of Tears").locked = false;
+			System.out.println("You have consumed a fungus. This gives you the ability to climb walls to go in certain locations. ");
 		} else {
 			System.out.println("You can't eat that. ");
 		}
 	}
-	
+
 	void openDoor(String item) {
-		
+
 		if (item.equals("door")) {
-			//roomMap.get(Greenpath).isLocked = false;
-			System.out.println("The door has been unlocked. ");
+			if (!inventory.contains("key")) {
+				System.out.println("You don't have the key needed. ");
+				return;
+			} else {
+				roomMap.get("Greenpath").locked = false;
+				System.out.println("The door has been unlocked. ");
+			}
 		} else {
 			System.out.println("You can't open that. ");
 		}
 	}
-	
+
 	void turnOnItem(String item) {
 		if (item.equals("flashlight")) {
 			itemMap.get(item).isActivated = true;
 			System.out.println("Your flashlight is now on. ");
+			roomMap.get("Resting Grounds").locked = false;
+			roomMap.get("Dirtmouth").locked = false;
 		} else {
 			System.out.println("You can't turn that on. ");
+		}
+	}
+
+	void turnOffItem(String item) {
+		if (item.equals("flashlight")) {
+			itemMap.get(item).isActivated = false;
+			System.out.println("Your flashlight is now off. ");
+			roomMap.get("Resting Grounds").locked = true;
+			roomMap.get("Dirtmouth").locked = true;
+		} else {
+			System.out.println("You can't turn that off. ");
 		}
 	}
 
