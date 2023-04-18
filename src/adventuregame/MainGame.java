@@ -3,6 +3,7 @@ package adventuregame;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 /* A skeleton program for a text adventure game */
 /* some other parts, like rooms, will be explained in class */
@@ -10,6 +11,7 @@ import java.util.HashMap;
 public class MainGame {
 
 	static int INVSIZE = 10; //size of inventory	
+	Timer timer = new Timer();
 
 	//instance variables
 	HashMap<String,Room> roomMap = new HashMap<String,Room>();
@@ -21,6 +23,7 @@ public class MainGame {
 	String currentRoom;
 	Player player = new Player();
 
+	static final int SLEEPTIME = 5000;
 	int turns = 0;
 
 	public static void main(String[]args){
@@ -48,8 +51,6 @@ public class MainGame {
 			//check to see if the player has won the game
 
 		}
-
-		// does anything need to be done after the main game loop exits?
 
 	}
 
@@ -86,11 +87,11 @@ public class MainGame {
 		fungi.isActivated = false;
 
 		Item sign = new Item("sign");
-		sign.descr = "Nothing special about it. Just a regular sign warning explorers of dangers beneath. ";
+		sign.descr = "Nothing special about it. Just a regular sign warning explorers of dangers beneath.";
 		sign.isCarryable = false;
 
 		Item supplies = new Item ("supplies");
-		supplies.descr = "Some scattered supplies from previous explorers. Among them there is a flashlght. ";
+		supplies.descr = "Some scattered supplies from previous explorers. Among them there is a flashlght.";
 		supplies.isCarryable = false;
 		//!TODO if the player inputs take supplies, say "you have to be more specific, which supply do you want to take?"
 
@@ -104,20 +105,20 @@ public class MainGame {
 		dreamNail.isCarryable = true;
 
 		Item lurien = new Item ("lurien");
-		lurien.descr = "Lurien the watcher one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		lurien.descr = "Lurien the watcher one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight sealed in its vessel.";
 		lurien.isCarryable = false;
 
 		Item monomon = new Item ("monomon");
-		monomon.descr = "Monomon the teacher is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		monomon.descr = "Monomon the teacher is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight sealed in its vessel.";
 		monomon.isCarryable = false;
 
 		Item herrah = new Item ("herrah");
-		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight selaed in its vessel.";
+		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight sealed in its vessel.";
 		herrah.isCarryable = false;
 
 		Item blackEgg = new Item ("egg");
 		blackEgg.descr = "A large black egg, looks like something mysterious lies inside. "
-				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force";
+				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force.";
 		blackEgg.isCarryable = false;
 
 
@@ -214,16 +215,12 @@ public class MainGame {
 		case "i": case "inventory": 
 			showInventory();
 			break;
-
-
 		case "help":
 			printHelp();
 			break;
 		case "look":
 			lookAtRoom();
-			break;
-
-			/**** two word commands ****/		
+			break;	
 
 			/**** two word commands ****/	
 		case "pickup": case "take": 
@@ -263,7 +260,7 @@ public class MainGame {
 	//tons of other methods go here ...	
 
 	void buyObject(String object) {
-		
+
 		if (!currentRoom.equals("Sly's shop")) {
 			System.out.println("You are not in a shop. ");
 			return;
@@ -279,14 +276,15 @@ public class MainGame {
 				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 			}
 		}
-		//!TODO Make it so that after you buy the key, the inventory shows you have 0 geo
+		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
 	}
 
 	void attack(String word2) {
 
 		if (itemMap.get(word2).isAttackable == true) {
 			itemMap.get(word2).healthPoints--;
-		} 
+		}
+
 		if (itemMap.get(word2).healthPoints == 0) {
 			System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
 			if (word2.equals("rock")) {
@@ -295,8 +293,18 @@ public class MainGame {
 			}
 			itemMap.remove(word2);
 		}
+		
+		if (player.activeCombat) {
+			System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned");
+			
+			//TODO fix the timer REMEMBER TO EMAIL HARWOOD
+			try {
+				Thread.sleep(SLEEPTIME);
+			} catch (InterruptedException e) {}
+			
+		}
 
-	}	
+	}
 
 	void lookAtRoom() {
 		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
@@ -345,7 +353,7 @@ public class MainGame {
 		}
 		if (itemMap.get(object).isCarryable) {
 			inventory.add(object);
-			System.out.println("You are now carrying a " + object);
+			System.out.println("You are now carrying a " + object + ".");
 		}
 
 	}
@@ -362,22 +370,24 @@ public class MainGame {
 	void printHelp() {
 
 		System.out.println("Here are all of your controls: \n-----------------------------");
-		System.out.println("n/north - go north             s/south - go south");
-		System.out.println("e/east - go east               w/west - go west");
-		System.out.println("u - go up                      d - go down");
-		System.out.println("i/inventory - shows inventory  pickup/take - pick up item in current location");
+		System.out.println("n/north - go north            | s/south - go south");
+		System.out.println("e/east - go east              | w/west - go west");
+		System.out.println("u - go up                     | d - go down");
+		System.out.println("i/inventory - shows inventory | pickup/take - pick up item in current location");
 		System.out.println("examine - looks at object with more detail");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
+		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
+		
 
 	}
 
 	void examineObject(String item) {
-		
+
 		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item))) {		
 			System.out.println(itemMap.get(item).getDescr());
 		}		
 		System.out.println("You can't examine that right now.");
-		
+
 	}
 
 	void eatItem(String item) {
