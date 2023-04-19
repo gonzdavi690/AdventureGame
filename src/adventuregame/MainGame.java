@@ -198,7 +198,7 @@ public class MainGame {
 
 		//handle situation where no words entered ...
 
-		String words[] = text.split(" ");
+		String words[] = text.toLowerCase().split(" ");
 
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
@@ -245,7 +245,6 @@ public class MainGame {
 		case "attack":
 			attack(word2);
 			break;
-
 		case "eat":
 			eatItem(word2);
 			break;
@@ -326,13 +325,17 @@ public class MainGame {
 			if (word2.equals("hornet")) {
 
 				if (player.activeCombat) {
-					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned");
+					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned!");
 
 					//TODO fix the timer REMEMBER TO EMAIL HARWOOD
 					try {
 						Thread.sleep(SLEEPTIME);
+						if (word2.equals("hornet")) {
+							
+						}
+						
 					} catch (InterruptedException e) {}
-
+					
 				}
 			} 
 
@@ -355,17 +358,12 @@ public class MainGame {
 					System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
 					if (word2.equals("rock")) {
 						player.geo = 100;
-						inventory.add("" + player.geo + " geo");
+						inventory.add(player.geo + " geo");
 					}
 					itemMap.remove(word2);
 				}
 			} 
 		}
-
-
-
-
-
 	}
 
 	void lookAtRoom() {
@@ -417,17 +415,27 @@ public class MainGame {
 	}
 
 	void pickUpItem(String object) {
+
 		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(object))) {
+
 			if (object.equals("supplies")) {
 				System.out.println("You have to be more specific, which supply do you want to take?");
 			}
-			if (itemMap.get(object).isCarryable) {
-				inventory.add(object);
-				System.out.println("You are now carrying a " + object + ".");
+
+			if (!inventory.contains(object)) {
+				if (itemMap.get(object).isCarryable) {
+					inventory.add(object);
+					System.out.println("You are now carrying a " + object + ".");
+				} else {
+					System.out.println("This is not carryable.");
+				}				
+			} else {
+				System.out.println("You already have that.");
 			}
+
 		} else {
 			System.out.println("You can't take that right now.");
-		}
+		}	
 
 	}
 
@@ -450,13 +458,13 @@ public class MainGame {
 		System.out.println("examine - looks at object with more detail");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
-
+		
 
 	}
 
 	void examineObject(String item) {
 
-		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item))) {		
+		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item)) || inventory.contains(item)) {		
 			System.out.println(itemMap.get(item).getDescr());
 		} else {
 			System.out.println("You can't examine that right now.");
@@ -468,6 +476,7 @@ public class MainGame {
 		if (inventory.contains(item)) {
 			if (item.equals("fungi") || item.equals("fungus")) {
 				itemMap.get("fungi").isActivated = true;
+				inventory.remove(item);
 				roomMap.get("City of Tears").locked = false;
 				System.out.println("You have consumed a fungus. This gives you the ability to climb walls to go in certain locations. ");
 			} else {
@@ -524,20 +533,23 @@ public class MainGame {
 	}
 
 	void dreamNailItem(String item) {
-		if (item.equals("herrah")) {
-			dreamerSeals--;
-			System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
-		}
-		else if (item.equals("monomon")) {
-			dreamerSeals--;
-			System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
-		}
-		else if (item.equals("lurien")) {
-			dreamerSeals--;
-			System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
-		} else {
-			System.out.println("You can't dream nail that");
-		}
+
+		if (inventory.contains("dreamnail")) {
+			if (item.equals("herrah")) {
+				dreamerSeals--;
+				System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
+			}
+			else if (item.equals("monomon")) {
+				dreamerSeals--;
+				System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
+			}
+			else if (item.equals("lurien")) {
+				dreamerSeals--;
+				System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
+			} else {
+				System.out.println("You can't dream nail that");
+			}
+		} else {System.out.println("You don't have a dream nail yet.");}
 	}
 
 }
