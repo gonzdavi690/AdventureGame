@@ -1,6 +1,6 @@
 package adventuregame;
 
-
+//exmaine nail, add the benches thing, examine things that are in your inventory, run preprocess, remove fungi once you eat 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -25,7 +25,7 @@ public class MainGame {
 	int dreamerSeals = 3;
 	boolean ending = false;
 	Boss hornet = new Boss(5,1);
-	Boss hollowKnight = new Boss(8,2);
+	Boss hollowKnight = new Boss(8,1);
 
 	static final int SLEEPTIME = 5000;
 	int turns = 0;
@@ -49,6 +49,8 @@ public class MainGame {
 			command = getCommand();
 
 			playing = parseCommand(command);
+			
+			preProcess(command);
 
 			//check to see if player has died (in whichever various ways the player can die)
 
@@ -198,7 +200,7 @@ public class MainGame {
 
 		//handle situation where no words entered ...
 
-		String words[] = text.split(" ");
+		String words[] = text.toLowerCase().split(" ");
 
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
@@ -421,9 +423,15 @@ public class MainGame {
 			if (object.equals("supplies")) {
 				System.out.println("You have to be more specific, which supply do you want to take?");
 			}
-			if (itemMap.get(object).isCarryable) {
-				inventory.add(object);
-				System.out.println("You are now carrying a " + object + ".");
+			if (!inventory.contains(object)) {
+				if (itemMap.get(object).isCarryable) {
+					inventory.add(object);
+					System.out.println("You are now carrying a " + object + ".");
+				} else {
+					System.out.println("This is not carryable.");
+				}
+			} else {
+				System.out.println("You already have that.");
 			}
 		} else {
 			System.out.println("You can't take that right now.");
@@ -456,7 +464,7 @@ public class MainGame {
 
 	void examineObject(String item) {
 
-		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item))) {		
+		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item)) || inventory.contains(item)) {		
 			System.out.println(itemMap.get(item).getDescr());
 		} else {
 			System.out.println("You can't examine that right now.");
@@ -468,6 +476,7 @@ public class MainGame {
 		if (inventory.contains(item)) {
 			if (item.equals("fungi") || item.equals("fungus")) {
 				itemMap.get("fungi").isActivated = true;
+				inventory.remove(item);
 				roomMap.get("City of Tears").locked = false;
 				System.out.println("You have consumed a fungus. This gives you the ability to climb walls to go in certain locations. ");
 			} else {
@@ -524,19 +533,23 @@ public class MainGame {
 	}
 
 	void dreamNailItem(String item) {
-		if (item.equals("herrah")) {
-			dreamerSeals--;
-			System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
-		}
-		else if (item.equals("monomon")) {
-			dreamerSeals--;
-			System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
-		}
-		else if (item.equals("lurien")) {
-			dreamerSeals--;
-			System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
+		if (inventory.contains("dreamnail")) {
+			if (item.equals("herrah")) {
+				dreamerSeals--;
+				System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
+			}
+			else if (item.equals("monomon")) {
+				dreamerSeals--;
+				System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
+			}
+			else if (item.equals("lurien")) {
+				dreamerSeals--;
+				System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
+			} else {
+				System.out.println("You can't dream nail that");
+			}
 		} else {
-			System.out.println("You can't dream nail that");
+			System.out.println("You don't have a dream nail yet.");
 		}
 	}
 
