@@ -22,6 +22,10 @@ public class MainGame {
 	ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
 	Player player = new Player();
+	int dreamerSeals = 3;
+	boolean ending = false;
+	Boss hornet = new Boss(5,1);
+	Boss hollowKnight = new Boss(8,2);
 
 	static final int SLEEPTIME = 5000;
 	int turns = 0;
@@ -49,6 +53,16 @@ public class MainGame {
 			//check to see if player has died (in whichever various ways the player can die)
 
 			//check to see if the player has won the game
+
+			if (ending) {
+				System.out.println("As you land a final attack on The Hollow Knight, the infection which it had been carrying for eternity, slowly releases. To prevent the entire kingdom from destrcution, "
+						+ "The Hollow Knight was trapped inside the black egg, for eternity, to retain that infection there. Now, it has been transfered to you. You helplessly watch as the chains that were holding the Hollow Knight start holding you instead."
+						+ "Your eyes turn a bright orange color, and the black egg is re-sealed. You have become the new Hollow Knight.");
+				System.out.println("Thank you for playing :)");
+				System.out.println("Game by David and Karim");
+				System.out.println("Creative inspiration: Hollow Knight. All credits for the design of the rooms, characters, and storyline goes to Team Cherry. ");
+				playing = false;
+			}
 
 		}
 
@@ -116,10 +130,6 @@ public class MainGame {
 		herrah.descr = "Herrah the beast is one of the three dreamers: beings whose goal is to remain in eternal sleep and keep the Hollow Knight sealed in its vessel.";
 		herrah.isCarryable = false;
 
-		Item blackEgg = new Item ("egg");
-		blackEgg.descr = "A large black egg, looks like something mysterious lies inside. "
-				+ "It has a large crack, but it is sealed by three mysterious beings through a subconscious force.";
-		blackEgg.isCarryable = false;
 
 
 		itemMap.put("key", key);
@@ -133,8 +143,9 @@ public class MainGame {
 		itemMap.put("flashlight", flashlight);
 		itemMap.put("lurien", lurien);
 		itemMap.put("monomon", monomon);
+		itemMap.put("dreamnail", dreamNail);
 		itemMap.put("herrah", herrah);
-		itemMap.put("egg", blackEgg);
+
 
 		roomMap.get("Sly's shop").itemList.add(key);
 		roomMap.get("Forgotten Crossroads").itemList.add(door);
@@ -148,7 +159,9 @@ public class MainGame {
 		roomMap.get("Resting Grounds").itemList.add(dreamNail);
 		roomMap.get("Resting Grounds").itemList.add(monomon);
 		roomMap.get("Deepnest").itemList.add(herrah);
-		roomMap.get("Temple Of The Black Egg").itemList.add(blackEgg);
+
+
+
 
 		System.out.println("Greetings, player! Welcome to Hollow Knight. You will have to navigate through the terrain starting from dirtmouth. You will find that I've put a little parting gift in your inventory, you should go check it out. Anyway, I won't keep you here any longer traveller, but you can call on me anytime whenever you need 'help' >:)\n");
 		System.out.println("TIP: Please activate word wrap on your console for all the text to show up.");
@@ -176,8 +189,7 @@ public class MainGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
-		text = text.replaceAll("turn on", "turnon");
-		text = text.replaceAll("turn off", "turnoff");
+
 
 		return text;
 	}
@@ -191,8 +203,14 @@ public class MainGame {
 		//separate out into word1, word2, etc.
 		String word1 = words[0];
 		String word2 = "";
+		String word3 = "";
+
 		if (words.length > 1) {
 			word2 = words[1];
+		} 
+
+		if (words.length > 2) {
+			word3 = words[2];
 		} 
 		//But we have to make sure that this array element exists
 
@@ -223,15 +241,11 @@ public class MainGame {
 			break;	
 
 			/**** two word commands ****/	
-		case "pickup": case "take": 
-			pickUpItem(word2);
-			break;
+
 		case "attack":
 			attack(word2);
 			break;
-		case "examine":
-			examineObject(word2);
-			break;
+
 		case "eat":
 			eatItem(word2);
 			break;
@@ -241,11 +255,38 @@ public class MainGame {
 		case "open":
 			openDoor(word2);
 			break;
-		case "turn on":
-			turnOnItem(word2);
+
+
+			/**** Three word commands****/
+
+		case "turn":
+			if (word2.equals("off")) {
+				turnOffItem(word3);
+			}
+			if (word2.equals("on")) {
+				turnOnItem(word3);
+			} else {
+				System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
+			}
 			break;
-		case "turn off":
-			turnOffItem(word2);
+		case "dream":
+			if (word2.equals("nail")) {
+				dreamNailItem(word3);
+			} else {
+				System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
+			}
+			break;
+		case "pickup": case "take":
+			if (word2.equals("dream")) {
+				word2 = "dreamnail";
+			}
+			pickUpItem(word2);
+			break;
+		case "examine":
+			if (word2.equals("dream")) {
+				word2 = "dreamnail";
+			}
+			examineObject(word2);
 			break;
 
 			/**** SPECIAL COMMANDS ****/
@@ -281,28 +322,49 @@ public class MainGame {
 
 	void attack(String word2) {
 
-		if (itemMap.get(word2).isAttackable == true) {
-			itemMap.get(word2).healthPoints--;
+		if (itemMap.get(word2) == null) {
+			if (word2.equals("hornet")) {
+
+				if (player.activeCombat) {
+					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned");
+
+					//TODO fix the timer REMEMBER TO EMAIL HARWOOD
+					try {
+						Thread.sleep(SLEEPTIME);
+					} catch (InterruptedException e) {}
+
+				}
+			} 
+
+			if (word2.equals("hollow")) {
+
+				//Add stuff here
+				hollowKnight.lives--;
+				if (hollowKnight.lives == 0) {
+					ending = true;
+				}
+			}
+		} else {
+
+			if (itemMap.get(word2).isAttackable == true) {
+				itemMap.get(word2).healthPoints--;
+			}
+
+			if (word2.equals("rock")) {
+				if (itemMap.get(word2).healthPoints == 0) {
+					System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
+					if (word2.equals("rock")) {
+						player.geo = 100;
+						inventory.add("" + player.geo + " geo");
+					}
+					itemMap.remove(word2);
+				}
+			} 
 		}
 
-		if (itemMap.get(word2).healthPoints == 0) {
-			System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
-			if (word2.equals("rock")) {
-				player.geo = 100;
-				inventory.add("" + player.geo + " geo");
-			}
-			itemMap.remove(word2);
-		}
-		
-		if (player.activeCombat) {
-			System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned");
-			
-			//TODO fix the timer REMEMBER TO EMAIL HARWOOD
-			try {
-				Thread.sleep(SLEEPTIME);
-			} catch (InterruptedException e) {}
-			
-		}
+
+
+
 
 	}
 
@@ -320,8 +382,13 @@ public class MainGame {
 			System.out.println("You can't go there.");
 			return;
 		}
+
 		if (inventory.contains("cloak")) {
 			roomMap.get("Fungal Wastes").locked = false;
+		}
+
+		if (dreamerSeals == 0) {
+			roomMap.get("Temple Of The Black Egg").locked = false;
 		}
 		if (roomMap.get(newRoom).locked) {
 			if (newRoom.equals("Greenpath")) {
@@ -339,6 +406,9 @@ public class MainGame {
 			if (newRoom.equals("Deepnest")) {
 				System.out.println("This area is pitch black. You can't see anything, so you can't explore it. ");
 			}
+			if (newRoom.equals("Temple Of The Black Egg")) {
+				System.out.println("Entrance is sealed by three mysterious beings through a subconscious force, like three seals. ");
+			}
 			return;
 		}
 		currentRoom = newRoom;
@@ -347,13 +417,16 @@ public class MainGame {
 	}
 
 	void pickUpItem(String object) {
-
-		if (object.equals("supplies")) {
-			System.out.println("You have to be more specific, which supply do you want to take?");
-		}
-		if (itemMap.get(object).isCarryable) {
-			inventory.add(object);
-			System.out.println("You are now carrying a " + object + ".");
+		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(object))) {
+			if (object.equals("supplies")) {
+				System.out.println("You have to be more specific, which supply do you want to take?");
+			}
+			if (itemMap.get(object).isCarryable) {
+				inventory.add(object);
+				System.out.println("You are now carrying a " + object + ".");
+			}
+		} else {
+			System.out.println("You can't take that right now.");
 		}
 
 	}
@@ -377,7 +450,7 @@ public class MainGame {
 		System.out.println("examine - looks at object with more detail");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
-		
+
 
 	}
 
@@ -385,19 +458,23 @@ public class MainGame {
 
 		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(item))) {		
 			System.out.println(itemMap.get(item).getDescr());
-		}		
-		System.out.println("You can't examine that right now.");
+		} else {
+			System.out.println("You can't examine that right now.");
+		}
 
 	}
 
 	void eatItem(String item) {
-
-		if (item.equals("fungi") || item.equals("fungus")) {
-			itemMap.get("fungi").isActivated = true;
-			roomMap.get("City of Tears").locked = false;
-			System.out.println("You have consumed a fungus. This gives you the ability to climb walls to go in certain locations. ");
+		if (inventory.contains(item)) {
+			if (item.equals("fungi") || item.equals("fungus")) {
+				itemMap.get("fungi").isActivated = true;
+				roomMap.get("City of Tears").locked = false;
+				System.out.println("You have consumed a fungus. This gives you the ability to climb walls to go in certain locations. ");
+			} else {
+				System.out.println("You can't eat that. ");
+			}
 		} else {
-			System.out.println("You can't eat that. ");
+			System.out.println("You don't have that item in your inventory. ");
 		}
 	}
 
@@ -417,24 +494,49 @@ public class MainGame {
 	}
 
 	void turnOnItem(String item) {
-		if (item.equals("flashlight")) {
-			itemMap.get(item).isActivated = true;
-			System.out.println("Your flashlight is now on. ");
-			roomMap.get("Resting Grounds").locked = false;
-			roomMap.get("Dirtmouth").locked = false;
+		if (inventory.contains(item)) {
+			if (item.equals("flashlight")) {
+				itemMap.get(item).isActivated = true;
+				System.out.println("Your flashlight is now on. ");
+				roomMap.get("Resting Grounds").locked = false;
+				roomMap.get("Deepnest").locked = false;
+			} else {
+				System.out.println("You can't turn that on. ");
+			}
 		} else {
-			System.out.println("You can't turn that on. ");
+			System.out.println("You don't have that item in your inventory. ");
 		}
 	}
 
 	void turnOffItem(String item) {
-		if (item.equals("flashlight")) {
-			itemMap.get(item).isActivated = false;
-			System.out.println("Your flashlight is now off. ");
-			roomMap.get("Resting Grounds").locked = true;
-			roomMap.get("Dirtmouth").locked = true;
+		if (inventory.contains(item)) {
+			if (item.equals("flashlight")) {
+				itemMap.get(item).isActivated = false;
+				System.out.println("Your flashlight is now off. ");
+				roomMap.get("Resting Grounds").locked = true;
+				roomMap.get("Deepnest").locked = true;
+			} else {
+				System.out.println("You can't turn that off. ");
+			}
 		} else {
-			System.out.println("You can't turn that off. ");
+			System.out.println("You don't have that item in your inventory. ");
+		}
+	}
+
+	void dreamNailItem(String item) {
+		if (item.equals("herrah")) {
+			dreamerSeals--;
+			System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
+		}
+		else if (item.equals("monomon")) {
+			dreamerSeals--;
+			System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
+		}
+		else if (item.equals("lurien")) {
+			dreamerSeals--;
+			System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
+		} else {
+			System.out.println("You can't dream nail that");
 		}
 	}
 

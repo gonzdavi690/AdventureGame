@@ -58,7 +58,7 @@ class Room {
 		roomList.put("Sly's shop", r);
 
 		r = new Room(false, "FORGOTTEN CROSSROADS", "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain. "
-				+ "Right beside you, there is a large shiny rock. It looks interesting. " + "To the North, there is a wide passage to another room."
+				+ "Right beside you, there is a large shiny rock. It looks interesting. " + "To the North, there is a room resembling a large, cracked black egg, looks like something mysterious lies inside."
 				+ "Directly west there is a door which is locked. " + "Directly south there is a wall. " + "To the east, a narrow and pitch black passage begins."); 
 		r.setExits("Temple Of The Black Egg", "", "Greenpath", "Resting Grounds", "Dirtmouth", "");
 		roomList.put("Forgotten Crossroads", r);
@@ -92,7 +92,8 @@ class Room {
 		r.setExits("", "", "", "", "Fungal Wastes", "");
 		roomList.put("Deepnest", r);
 
-		r = new Room(false, "TEMPLE OF THE BLACK EGG", "A large empty room with what seems to be a huge egg in the middle. There are three masks carved on it, of each of the three dreamers. There is a bench. "
+		r = new Room(true, "TEMPLE OF THE BLACK EGG", "A large, mainly empty room. In the center of it, The Hollow Knight is found, chained to the inside of the egg. Its eyes glow as you come close, ready to attack you."
+				+ " There is a bench. "
 				+ "The only exit is south." ); 
 		r.setExits("", "Forgotten Crossroads", "", "", "", "");
 		roomList.put("Temple Of The Black Egg", r);
