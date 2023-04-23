@@ -4,6 +4,7 @@ package adventuregame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /* A skeleton program for a text adventure game */
 /* some other parts, like rooms, will be explained in class */
@@ -12,7 +13,8 @@ public class MainGame {
 
 	static int INVSIZE = 10; //size of inventory	
 	Timer timer = new Timer();
-
+	int secondsRemaining;
+	
 	//instance variables
 	HashMap<String,Room> roomMap = new HashMap<String,Room>();
 	HashMap<String, Item> itemMap = new HashMap<String,Item>(); //list of all item objects
@@ -32,6 +34,38 @@ public class MainGame {
 
 	public static void main(String[]args){
 		new MainGame();
+	}
+	
+	public void startAttackTimer() {
+		CountdownTimer countdownTimer = new CountdownTimer(5);
+		countdownTimer.start();
+	}
+	
+	private class CountdownTimer {
+		private int secondsRemaining;
+		private Timer timer;
+		
+		public CountdownTimer(int seconds) {
+			this.secondsRemaining = seconds;
+		}
+		
+		public void start() {
+			
+			timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+					System.out.println(secondsRemaining);
+					secondsRemaining--;
+					
+					if (secondsRemaining <= 0) {
+						timer.cancel();
+						combat();
+					}
+				}
+			}, 0, 5000);
+			
+		}
+		
 	}
 
 	MainGame() {
@@ -319,6 +353,11 @@ public class MainGame {
 		}
 		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
 	}
+	
+	void combat() {
+		
+		
+	}
 
 	void attack(String word2) {
 
@@ -457,9 +496,10 @@ public class MainGame {
 		System.out.println("u - go up                     | d - go down");
 		System.out.println("i/inventory - shows inventory | pickup/take - pick up item in current location");
 		System.out.println("examine - looks at object with more detail");
+		System.out.println("buy - purchase items (only applies to special objects with this property)");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
-		
+		System.out.println("look - examines the surrounding area around you");
 
 	}
 
