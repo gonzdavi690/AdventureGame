@@ -65,6 +65,7 @@ public class MainGame {
 			}
 
 		}
+		System.exit(0);
 
 	}
 
