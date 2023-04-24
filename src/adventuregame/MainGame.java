@@ -23,11 +23,13 @@ public class MainGame {
 	//the inventory could be an array
 	ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
+	String spawn = "Dirtmouth";
 	Player player = new Player();
 	int dreamerSeals = 3;
 	boolean ending = false;
 	Boss hornet = new Boss(5,1);
 	Boss hollowKnight = new Boss(8,2);
+	
 
 	static final int SLEEPTIME = 5000;
 	int turns = 0;
@@ -83,6 +85,11 @@ public class MainGame {
 			command = getCommand();
 
 			playing = parseCommand(command);
+			
+			if(!player.alive) {
+				currentRoom = spawn;
+				lookAtRoom();
+			}
 
 			//check to see if player has died (in whichever various ways the player can die)
 
@@ -274,6 +281,9 @@ public class MainGame {
 		case "look":
 			lookAtRoom();
 			break;	
+		case "sit":
+			sitOnBench();
+			break;
 
 			/**** two word commands ****/	
 
@@ -310,7 +320,7 @@ public class MainGame {
 				System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
 			}
 			break;
-		case "pickup": case "take":
+		case "take":
 			if (word2.equals("dream")) {
 				word2 = "dreamnail";
 			}
@@ -346,7 +356,7 @@ public class MainGame {
 				inventory.add(object);
 				System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
 				player.geo -= 100;
-				inventory.remove(player.geo);
+				inventory.remove("100 geo");
 			} else {
 				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 			}
@@ -357,6 +367,15 @@ public class MainGame {
 	void combat() {
 		
 		
+	}
+	
+	void sitOnBench() {
+		if (currentRoom.equals("Dirtmouth") || currentRoom.equals("Dirtmouth") || currentRoom.equals("Greenpath") || currentRoom.equals("City of Tears") || currentRoom.equals("Temple Of The Black Egg") ) {
+			System.out.println("A much needed rest, thank you! ");
+			spawn = currentRoom;
+		} else {
+			System.out.println("There isn't a bench at this location. ");
+		}
 	}
 
 	void attack(String word2) {
@@ -500,6 +519,12 @@ public class MainGame {
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
 		System.out.println("look - examines the surrounding area around you");
+		System.out.println("take - picks up the chosen item (only applies to certain items)");
+		System.out.println("open - opens a door that is closed or locked.");
+		System.out.println("sit - sits on a bench, if you die, you'll respawn there. Sort of like a checkpoint. ");
+		System.out.println("turn on - powers on an item (only applies to special objects with this property).");
+		System.out.println("turn off - powers off an item (only applies to special objects with this property).");
+		System.out.println("dream nail - dream nails a higher being, allowing the wielder to cut through the veil between dreams and waking");
 
 	}
 
@@ -592,6 +617,8 @@ public class MainGame {
 			}
 		} else {System.out.println("You don't have a dream nail yet.");}
 	}
+	
+	
 
 }
 
