@@ -1,6 +1,6 @@
 package adventuregame;
 
-//exmaine nail, add the benches thing, examine things that are in your inventory, run preprocess, remove fungi once you eat 
+//FIXME once you die it thinks you are at spawn and currentroom at the same time.  
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -342,6 +342,10 @@ public class MainGame {
 			if (word2.equals("hornet")) {
 				if (currentRoom.equals("Greenpath")) {
 					hornet.lives--;
+					player.activeCombat = true;
+					if (hornet.lives == 0) {
+						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
+					}
 					if (player.activeCombat) {
 
 						double chance = Math.random();
@@ -355,9 +359,7 @@ public class MainGame {
 							}
 						} else {
 							System.out.println("You had a near miss with hornet's attack, now's your chance!");
-						} if (hornet.lives == 0) {
-							System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
-						}
+						} 
 					}
 				} else {
 					System.out.println("You can't do that here.");
@@ -365,7 +367,7 @@ public class MainGame {
 			}
 
 			if (word2.equals("hollow")) {
-				if (currentRoom.equals("Deepnest")) {
+				if (currentRoom.equals("Temple Of The Black Egg")) {
 					
 					//Add stuff here
 					hollowKnight.lives--;
@@ -467,7 +469,11 @@ public class MainGame {
 				System.out.println("You have to be more specific, which supply do you want to take?");
 			}
 			if (object.equals("cloak")) {
-				System.out.println("If you want the cloak, you must defeat the hornet. Do you wish to attack now?");
+				if (hornet.lives!=0) {
+				System.out.println("If you want the cloak, you must defeat Hornet. Do you wish to attack now?");
+				return;
+				} 
+				
 			}
 
 			if (!inventory.contains(object)) {
