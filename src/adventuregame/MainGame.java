@@ -3,8 +3,6 @@ package adventuregame;
 //exmaine nail, add the benches thing, examine things that are in your inventory, run preprocess, remove fungi once you eat 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /* A skeleton program for a text adventure game */
 /* some other parts, like rooms, will be explained in class */
@@ -12,9 +10,8 @@ import java.util.TimerTask;
 public class MainGame {
 
 	static int INVSIZE = 10; //size of inventory	
-	Timer timer = new Timer();
-	int secondsRemaining;
-	
+
+
 	//instance variables
 	HashMap<String,Room> roomMap = new HashMap<String,Room>();
 	HashMap<String, Item> itemMap = new HashMap<String,Item>(); //list of all item objects
@@ -29,45 +26,13 @@ public class MainGame {
 	boolean ending = false;
 	Boss hornet = new Boss(5,1);
 	Boss hollowKnight = new Boss(8,2);
-	
+
 
 	static final int SLEEPTIME = 5000;
 	int turns = 0;
 
 	public static void main(String[]args){
 		new MainGame();
-	}
-	
-	public void startAttackTimer() {
-		CountdownTimer countdownTimer = new CountdownTimer(5);
-		countdownTimer.start();
-	}
-	
-	private class CountdownTimer {
-		private int secondsRemaining;
-		private Timer timer;
-		
-		public CountdownTimer(int seconds) {
-			this.secondsRemaining = seconds;
-		}
-		
-		public void start() {
-			
-			timer = new Timer();
-			timer.scheduleAtFixedRate(new TimerTask() {
-				public void run() {
-					System.out.println(secondsRemaining);
-					secondsRemaining--;
-					
-					if (secondsRemaining <= 0) {
-						timer.cancel();
-						combat();
-					}
-				}
-			}, 0, 5000);
-			
-		}
-		
 	}
 
 	MainGame() {
@@ -85,7 +50,7 @@ public class MainGame {
 			command = getCommand();
 
 			playing = parseCommand(command);
-			
+
 			if(!player.alive) {
 				currentRoom = spawn;
 				lookAtRoom();
@@ -202,9 +167,6 @@ public class MainGame {
 		roomMap.get("Resting Grounds").itemList.add(monomon);
 		roomMap.get("Deepnest").itemList.add(herrah);
 
-
-
-
 		System.out.println("Greetings, player! Welcome to Hollow Knight. You will have to navigate through the terrain starting from dirtmouth. You will find that I've put a little parting gift in your inventory, you should go check it out. Anyway, I won't keep you here any longer traveller, but you can call on me anytime whenever you need 'help' >:)\n");
 		System.out.println("TIP: Please activate word wrap on your console for all the text to show up.");
 
@@ -231,7 +193,6 @@ public class MainGame {
 		text = text.replaceAll("pick up", "pickup");
 		text = text.replaceAll("look at", "lookat");
 		text = text.replaceAll("climb up", "climbup");
-
 
 		return text;
 	}
@@ -363,47 +324,70 @@ public class MainGame {
 		}
 		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
 	}
-	
-	void combat() {
-		
-		
-	}
-	
+
 	void sitOnBench() {
-		if (currentRoom.equals("Dirtmouth") || currentRoom.equals("Dirtmouth") || currentRoom.equals("Greenpath") || currentRoom.equals("City of Tears") || currentRoom.equals("Temple Of The Black Egg") ) {
+
+		if (currentRoom.equals("Dirtmouth") || currentRoom.equals("Greenpath") || currentRoom.equals("City of Tears") || currentRoom.equals("Temple Of The Black Egg") ) {
 			System.out.println("A much needed rest, thank you! ");
 			spawn = currentRoom;
 		} else {
-			System.out.println("There isn't a bench at this location. ");
+			System.out.println("There isn't a bench at this location.");
 		}
 	}
 
+//	TODO fix the timer REMEMBER TO EMAIL HARWOOD
 	void attack(String word2) {
 
 		if (itemMap.get(word2) == null) {
 			if (word2.equals("hornet")) {
+				if (currentRoom.equals("Greenpath")) {
+					hornet.lives--;
+					if (player.activeCombat) {
 
-				if (player.activeCombat) {
-					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned!");
+						double chance = Math.random();
 
-					//TODO fix the timer REMEMBER TO EMAIL HARWOOD
-					try {
-						Thread.sleep(SLEEPTIME);
-						if (word2.equals("hornet")) {
-							
+						if (chance <= 0.33) {
+							player.healthPoints--;
+							System.out.println("You have been struck!");
+							if (player.healthPoints == 0) {
+								player.alive = false;
+								player.activeCombat = false;
+							}
+						} else {
+							System.out.println("You had a near miss with hornet's attack, now's your chance!");
+						} if (hornet.lives == 0) {
+							System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
 						}
-						
-					} catch (InterruptedException e) {}
-					
+					}
+				} else {
+					System.out.println("You can't do that here.");
 				}
-			} 
+			}
 
 			if (word2.equals("hollow")) {
-
-				//Add stuff here
-				hollowKnight.lives--;
-				if (hollowKnight.lives == 0) {
-					ending = true;
+				if (currentRoom.equals("Deepnest")) {
+					
+					//Add stuff here
+					hollowKnight.lives--;
+					if (player.activeCombat) {
+						
+						double chance =  Math.random();
+						
+						if (chance <= 0.50) {
+							player.healthPoints--;
+							System.out.println("You have been struck!");
+							if (player.healthPoints == 0) {
+								player.alive = false;
+								player.activeCombat = false;
+							}
+						} else {
+							System.out.println("You had a near miss with the Hollow Knight's attack, now's your chance!");
+						} if (hollowKnight.lives == 0) {
+							ending = true;
+						}
+					}
+				} else {
+					System.out.println("You can't do that here.");
 				}
 			}
 		} else {
@@ -412,7 +396,7 @@ public class MainGame {
 				itemMap.get(word2).healthPoints--;
 			}
 
-			if (word2.equals("rock")) {
+			if (word2.equals("rock") && currentRoom.equals("Forgotten Crossroads")) {
 				if (itemMap.get(word2).healthPoints == 0) {
 					System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
 					if (word2.equals("rock")) {
@@ -421,7 +405,9 @@ public class MainGame {
 					}
 					itemMap.remove(word2);
 				}
-			} 
+			} else {
+				System.out.println("You can't do that. ");
+			}
 		}
 	}
 
@@ -479,6 +465,9 @@ public class MainGame {
 
 			if (object.equals("supplies")) {
 				System.out.println("You have to be more specific, which supply do you want to take?");
+			}
+			if (object.equals("cloak")) {
+				System.out.println("If you want the cloak, you must defeat the hornet. Do you wish to attack now?");
 			}
 
 			if (!inventory.contains(object)) {
@@ -617,8 +606,5 @@ public class MainGame {
 			}
 		} else {System.out.println("You don't have a dream nail yet.");}
 	}
-	
-	
-
 }
 

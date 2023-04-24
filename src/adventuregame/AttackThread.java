@@ -9,27 +9,24 @@ public class AttackThread {
     static boolean attack = false;
 
     public static void main(String[] args) throws InterruptedException {
-        System.out.println("Welcome. Press <ENTER> to continue.");
+    	
         sc.nextLine();
         new Thread6Sec().start();
 
         //DO NOT USE SCANNER FOR THE NEXT n seconds or the program will crash due to the thread trying to use Scanner too.
-        System.out.println("the bear attacks you");
-        Thread.sleep(2000);
+        System.out.println("Hornet is attacking you! Dodge quickly!");
+        Thread.sleep(5000);
         if (!attack) {
-            System.out.println("the bear eats you");
-            Thread.sleep(2000);
-        }
-        if (!attack) {            
-            System.out.println("the bear is happy");
-            Thread.sleep(1000);
+            System.out.println("You have fallen to the mighty hornet!");
+            Thread.sleep(0);
         }
         if (attack) { //this has to be done in the first n seconds
-            System.out.println("No way, you were just playing dead. You awake and kill the bear!");
-        } else {
-            System.out.println("Your skeleton looks very attractive.");
-        }
-
+            System.out.println("You have dodged the hornet's attack! Strike her while she's stunned!");
+        } 
+//        else {
+//            System.out.println("Your skeleton looks very attractive.");
+//        }
+        			
     }
 
     private static class Thread6Sec extends Thread {
