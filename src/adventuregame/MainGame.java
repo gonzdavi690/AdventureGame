@@ -4,6 +4,7 @@ package adventuregame;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /* A skeleton program for a text adventure game */
 /* some other parts, like rooms, will be explained in class */
@@ -12,7 +13,8 @@ public class MainGame {
 
 	static int INVSIZE = 10; //size of inventory	
 	Timer timer = new Timer();
-
+	int secondsRemaining;
+	
 	//instance variables
 	HashMap<String,Room> roomMap = new HashMap<String,Room>();
 	HashMap<String, Item> itemMap = new HashMap<String,Item>(); //list of all item objects
@@ -21,17 +23,51 @@ public class MainGame {
 	//the inventory could be an array
 	ArrayList<String> inventory = new ArrayList<String>();
 	String currentRoom;
+	String spawn = "Dirtmouth";
 	Player player = new Player();
 	int dreamerSeals = 3;
 	boolean ending = false;
 	Boss hornet = new Boss(5,1);
-	Boss hollowKnight = new Boss(8,1);
+	Boss hollowKnight = new Boss(8,2);
+	
 
 	static final int SLEEPTIME = 5000;
 	int turns = 0;
 
 	public static void main(String[]args){
 		new MainGame();
+	}
+	
+	public void startAttackTimer() {
+		CountdownTimer countdownTimer = new CountdownTimer(5);
+		countdownTimer.start();
+	}
+	
+	private class CountdownTimer {
+		private int secondsRemaining;
+		private Timer timer;
+		
+		public CountdownTimer(int seconds) {
+			this.secondsRemaining = seconds;
+		}
+		
+		public void start() {
+			
+			timer = new Timer();
+			timer.scheduleAtFixedRate(new TimerTask() {
+				public void run() {
+					System.out.println(secondsRemaining);
+					secondsRemaining--;
+					
+					if (secondsRemaining <= 0) {
+						timer.cancel();
+						combat();
+					}
+				}
+			}, 0, 5000);
+			
+		}
+		
 	}
 
 	MainGame() {
@@ -50,7 +86,10 @@ public class MainGame {
 
 			playing = parseCommand(command);
 			
-			preProcess(command);
+			if(!player.alive) {
+				currentRoom = spawn;
+				lookAtRoom();
+			}
 
 			//check to see if player has died (in whichever various ways the player can die)
 
@@ -67,6 +106,7 @@ public class MainGame {
 			}
 
 		}
+		System.exit(0);
 
 	}
 
@@ -241,13 +281,15 @@ public class MainGame {
 		case "look":
 			lookAtRoom();
 			break;	
+		case "sit":
+			sitOnBench();
+			break;
 
 			/**** two word commands ****/	
 
 		case "attack":
 			attack(word2);
 			break;
-
 		case "eat":
 			eatItem(word2);
 			break;
@@ -278,7 +320,7 @@ public class MainGame {
 				System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
 			}
 			break;
-		case "pickup": case "take":
+		case "take":
 			if (word2.equals("dream")) {
 				word2 = "dreamnail";
 			}
@@ -314,12 +356,26 @@ public class MainGame {
 				inventory.add(object);
 				System.out.println("Congratulations on your purchase, traveller. Here is your " + object);
 				player.geo -= 100;
-				inventory.remove(player.geo);
+				inventory.remove("100 geo");
 			} else {
 				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 			}
 		}
 		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
+	}
+	
+	void combat() {
+		
+		
+	}
+	
+	void sitOnBench() {
+		if (currentRoom.equals("Dirtmouth") || currentRoom.equals("Dirtmouth") || currentRoom.equals("Greenpath") || currentRoom.equals("City of Tears") || currentRoom.equals("Temple Of The Black Egg") ) {
+			System.out.println("A much needed rest, thank you! ");
+			spawn = currentRoom;
+		} else {
+			System.out.println("There isn't a bench at this location. ");
+		}
 	}
 
 	void attack(String word2) {
@@ -328,13 +384,17 @@ public class MainGame {
 			if (word2.equals("hornet")) {
 
 				if (player.activeCombat) {
-					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned");
+					System.out.println("Oh no! You stirred the wild Hornet! Quick, attack her while she's stunned!");
 
 					//TODO fix the timer REMEMBER TO EMAIL HARWOOD
 					try {
 						Thread.sleep(SLEEPTIME);
+						if (word2.equals("hornet")) {
+							
+						}
+						
 					} catch (InterruptedException e) {}
-
+					
 				}
 			} 
 
@@ -357,17 +417,12 @@ public class MainGame {
 					System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
 					if (word2.equals("rock")) {
 						player.geo = 100;
-						inventory.add("" + player.geo + " geo");
+						inventory.add(player.geo + " geo");
 					}
 					itemMap.remove(word2);
 				}
 			} 
 		}
-
-
-
-
-
 	}
 
 	void lookAtRoom() {
@@ -419,23 +474,27 @@ public class MainGame {
 	}
 
 	void pickUpItem(String object) {
+
 		if (roomMap.get(currentRoom).itemList.contains(itemMap.get(object))) {
+
 			if (object.equals("supplies")) {
 				System.out.println("You have to be more specific, which supply do you want to take?");
 			}
+
 			if (!inventory.contains(object)) {
 				if (itemMap.get(object).isCarryable) {
 					inventory.add(object);
 					System.out.println("You are now carrying a " + object + ".");
 				} else {
 					System.out.println("This is not carryable.");
-				}
+				}				
 			} else {
 				System.out.println("You already have that.");
 			}
+
 		} else {
 			System.out.println("You can't take that right now.");
-		}
+		}	
 
 	}
 
@@ -456,9 +515,16 @@ public class MainGame {
 		System.out.println("u - go up                     | d - go down");
 		System.out.println("i/inventory - shows inventory | pickup/take - pick up item in current location");
 		System.out.println("examine - looks at object with more detail");
+		System.out.println("buy - purchase items (only applies to special objects with this property)");
 		System.out.println("eat - eat item (only applies to special objects with this property)");
 		System.out.println("attack - allows you to attack things (only applies to special objects with this property)");
-
+		System.out.println("look - examines the surrounding area around you");
+		System.out.println("take - picks up the chosen item (only applies to certain items)");
+		System.out.println("open - opens a door that is closed or locked.");
+		System.out.println("sit - sits on a bench, if you die, you'll respawn there. Sort of like a checkpoint. ");
+		System.out.println("turn on - powers on an item (only applies to special objects with this property).");
+		System.out.println("turn off - powers off an item (only applies to special objects with this property).");
+		System.out.println("dream nail - dream nails a higher being, allowing the wielder to cut through the veil between dreams and waking");
 
 	}
 
@@ -533,6 +599,7 @@ public class MainGame {
 	}
 
 	void dreamNailItem(String item) {
+
 		if (inventory.contains("dreamnail")) {
 			if (item.equals("herrah")) {
 				dreamerSeals--;
@@ -548,10 +615,10 @@ public class MainGame {
 			} else {
 				System.out.println("You can't dream nail that");
 			}
-		} else {
-			System.out.println("You don't have a dream nail yet.");
-		}
+		} else {System.out.println("You don't have a dream nail yet.");}
 	}
+	
+	
 
 }
 
