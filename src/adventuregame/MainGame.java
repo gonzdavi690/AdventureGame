@@ -12,7 +12,6 @@ public class MainGame {
 
 	static int INVSIZE = 10; //size of inventory	
 
-
 	//instance variables
 	HashMap<String,Room> roomMap = new HashMap<String,Room>();
 	HashMap<String, Item> itemMap = new HashMap<String,Item>(); //list of all item objects
@@ -336,7 +335,7 @@ public class MainGame {
 		}
 	}
 
-//	
+
 	void attack(String word2) {
 
 		if (itemMap.get(word2) == null) {
@@ -345,12 +344,8 @@ public class MainGame {
 					hornet.lives--;
 					player.activeCombat = true;
 					if (hornet.lives == 0) {
-						player.activeCombat = false;
 						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
-						
-					}
-					if (player.activeCombat) {
-						
+						player.activeCombat = false;
 						double chance = Math.random();
 
 						if (chance <= 0.33) {
@@ -379,7 +374,7 @@ public class MainGame {
 
 						double chance =  Math.random();
 
-						if (chance <= 0.99) {
+						if (chance <= 0.50) {
 							player.healthPoints--;
 							System.out.println("You have been struck!");
 							if (player.healthPoints == 0) {
@@ -410,6 +405,8 @@ public class MainGame {
 							+ "To the North, there is a room resembling a large, cracked black egg, looks like something mysterious lies inside."
 							+ "Directly west there is a door which is locked." + "Directly south there is a wall."  + "To the east, a narrow and pitch black passage begins.";
 					if (word2.equals("rock")) {
+						roomMap.get(currentRoom).description = "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain. To the North, there is a room resembling a large, cracked black egg, looks like something mysterious lies inside."
+								+ "Directly west there is a door which is locked. Directly south there is a wall. To the east, a narrow and pitch black passage begins.";
 						player.geo = 100;
 						inventory.add(player.geo + " geo");
 					}
@@ -424,7 +421,6 @@ public class MainGame {
 	void lookAtRoom() {
 		System.out.println("\n== " + roomMap.get(currentRoom).getTitle() + " ==");
 		System.out.println(roomMap.get(currentRoom).getDesc());
-
 	}
 
 	void moveToRoom(char direction) {
@@ -480,16 +476,16 @@ public class MainGame {
 				if (hornet.lives != 0) {
 					System.out.println("If you want the cloak, you must defeat Hornet. Do you wish to attack now?");
 					return;
-				} 	
+				} else {
+					roomMap.get(currentRoom).description = "This lively part of the kingdom is filled with blooming flowers and growing vegetation. There is a bench. "
+							+ "To the south, there is a path that has a large gap.To the east there is a opened door ";
+				}
 			}
-
+			
 			if (!inventory.contains(object)) {
 				if (itemMap.get(object).isCarryable) {
 					inventory.add(object);
 					System.out.println("You are now carrying a " + object + ".");
-					if (object.equals("flashlight")) {
-						itemMap.get("supplies").descr = "Some scattered supplies from previous explorers. Nothing useful remains. ";
-					}
 				} else {
 					System.out.println("This is not carryable.");
 				}				
@@ -506,7 +502,7 @@ public class MainGame {
 	void showInventory() {
 
 		System.out.println("Current inventory:");
-		System.out.println("-----------------");
+		System.out.println("-----------------     HP: " + player.healthPoints);
 		for (int i = 0; i < inventory.size(); i++) {
 			System.out.println(inventory.get(i).toString());
 		}
@@ -608,15 +604,22 @@ public class MainGame {
 		if (inventory.contains("dreamnail")) {
 			if (item.equals("herrah") && currentRoom.equals("Deepnest")) {
 				dreamerSeals--;
-				System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
+				System.out.println("Herrah's eternal dream has ended and its seal has been destroyed.");
+				roomMap.get(currentRoom).description = "The deepest area of Hallownest. "
+						+ "Don't stay for long in this area, or you will end up sharing the fate of many other travellers who thought they were brave enough to stay. "
+						+ "The only exit is up.";
 			}
 			else if (item.equals("monomon") && currentRoom.equals("Resting Grounds")) {
 				dreamerSeals--;
-				System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
+				System.out.println("Monomon's eternal dream has ended and its seal has been destroyed.");
+				roomMap.get(currentRoom).description = "This serene, sacred area used to be where inhabitants of Hallownest conducted rituals for the dead."
+						+ "To the West is a small passageway.";
 			}
 			else if (item.equals("lurien") && currentRoom.equals("City of Tears")) {
 				dreamerSeals--;
-				System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
+				System.out.println("Lurien's eternal dream has ended and its seal has been destroyed.");
+				roomMap.get(currentRoom).description = "Welcome to the capital city of Hallownest. Due to being located under the Blue Lake, it is always raining. There is a silver bench. "
+						+ "Nearby, the remaining supplies of a past explorer can be found. There is a small exit north that takes you through a secret pathway. West is Fungal Wastes.";
 			} else {
 				System.out.println("You can't dream nail that right now");
 			}

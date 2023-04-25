@@ -82,13 +82,13 @@ class Room {
 
 
 		r = new Room(true, "RESTING GROUNDS", "This serene, sacred area used to be where inhabitants of Hallownest conducted rituals for the dead. Laying on the ground there is a pink dream nail. Right beside it, Monomon the Teacher is found asleep, glowing pink." 
-				+ "To the West is a small passageway. " ); 
+				+ "To the West is a small passageway."); 
 		r.setExits("", "", "Forgotten Crossroads", "", "", "");
 		roomList.put("Resting Grounds", r);
 
 		r = new Room(true, "DEEPNEST", "The deepest area of Hallownest. In this enormous, spider infested, dark sprawl of narrow passages, Herrah the Beast, in deep rest, can be found. "
 				+ "Don't stay for long in this area, or you will end up sharing the fate of many other travellers who thought they were brave enough to stay. " 
-				+ "The only exit is up. " ); 
+				+ "The only exit is up."); 
 		r.setExits("", "", "", "", "Fungal Wastes", "");
 		roomList.put("Deepnest", r);
 
