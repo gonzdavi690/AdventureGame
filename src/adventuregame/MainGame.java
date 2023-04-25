@@ -27,8 +27,6 @@ public class MainGame {
 	Boss hornet = new Boss(5,1);
 	Boss hollowKnight = new Boss(8,1);
 
-
-	static final int SLEEPTIME = 5000;
 	int turns = 0;
 
 	public static void main(String[]args){
