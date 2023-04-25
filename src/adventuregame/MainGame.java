@@ -53,6 +53,8 @@ public class MainGame {
 
 			if(!player.alive) {
 				currentRoom = spawn;
+				player.healthPoints = 3;
+				player.alive = true;
 				lookAtRoom();
 			}
 
@@ -329,21 +331,23 @@ public class MainGame {
 
 		if (currentRoom.equals("Dirtmouth") || currentRoom.equals("Greenpath") || currentRoom.equals("City of Tears") || currentRoom.equals("Temple Of The Black Egg") ) {
 			System.out.println("A much needed rest, thank you! ");
+			player.healthPoints =3;
 			spawn = currentRoom;
 		} else {
 			System.out.println("There isn't a bench at this location.");
 		}
 	}
 
-//	TODO fix the timer REMEMBER TO EMAIL HARWOOD
+//	
 	void attack(String word2) {
 
 		if (itemMap.get(word2) == null) {
 			if (word2.equals("hornet")) {
-				if (currentRoom.equals("Greenpath")) {
+				if (currentRoom.equals("Greenpath") && hornet.lives!= 0) {
 					hornet.lives--;
 					player.activeCombat = true;
 					if (hornet.lives == 0) {
+						player.activeCombat = false;
 						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
 					}
 					if (player.activeCombat) {
@@ -596,19 +600,19 @@ public class MainGame {
 	void dreamNailItem(String item) {
 
 		if (inventory.contains("dreamnail")) {
-			if (item.equals("herrah")) {
+			if (item.equals("herrah") && currentRoom.equals("Deepnest")) {
 				dreamerSeals--;
 				System.out.println("Herrah's eternal dream has ended and its seal has been destroyed. ");
 			}
-			else if (item.equals("monomon")) {
+			else if (item.equals("monomon") && currentRoom.equals("Resting Grounds")) {
 				dreamerSeals--;
 				System.out.println("Monomon's eternal dream has ended and its seal has been destroyed. ");
 			}
-			else if (item.equals("lurien")) {
+			else if (item.equals("lurien") && currentRoom.equals("City of Tears")) {
 				dreamerSeals--;
 				System.out.println("Lurien's eternal dream has ended and its seal has been destroyed. ");
 			} else {
-				System.out.println("You can't dream nail that");
+				System.out.println("You can't dream nail that right now");
 			}
 		} else {System.out.println("You don't have a dream nail yet.");}
 	}
