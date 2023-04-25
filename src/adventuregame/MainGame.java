@@ -25,7 +25,7 @@ public class MainGame {
 	int dreamerSeals = 3;
 	boolean ending = false;
 	Boss hornet = new Boss(5,1);
-	Boss hollowKnight = new Boss(8,2);
+	Boss hollowKnight = new Boss(8,1);
 
 
 	static final int SLEEPTIME = 5000;
@@ -298,9 +298,7 @@ public class MainGame {
 			System.out.println("Sorry, I don't understand that command. If you need help, type 'help'");
 		}
 		return true;
-	}	
-
-	//tons of other methods go here ...	
+	}
 
 	void buyObject(String object) {
 
@@ -319,8 +317,6 @@ public class MainGame {
 				System.out.println("You don't have enough geo to purchase that. Come back soon! ");
 			}
 		}
-		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
-		//fixed
 	}
 
 	void sitOnBench() {
@@ -339,13 +335,18 @@ public class MainGame {
 	void attack(String word2) {
 
 		if (itemMap.get(word2) == null) {
+
 			if (word2.equals("hornet")) {
-				if (currentRoom.equals("Greenpath") && hornet.lives!= 0) {
+				if (currentRoom.equals("Greenpath") && hornet.lives != 0) {
+
 					hornet.lives--;
 					player.activeCombat = true;
 					if (hornet.lives == 0) {
 						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
 						player.activeCombat = false;
+					}
+
+					if (player.activeCombat) {
 						double chance = Math.random();
 
 						if (chance <= 0.33) {
@@ -366,12 +367,15 @@ public class MainGame {
 			}
 
 			if (word2.equals("hollow")) {
-				if (currentRoom.equals("Temple Of The Black Egg")) {
+				if (currentRoom.equals("Temple Of The Black Egg") && hollowKnight.lives != 0) {
 
-					//Add stuff here
 					hollowKnight.lives--;
-					if (player.activeCombat) {
+					player.activeCombat = true;
+					if (hollowKnight.lives == 0) {
+						ending = true;
+					}
 
+					if (player.activeCombat) {
 						double chance =  Math.random();
 
 						if (chance <= 0.50) {
@@ -383,9 +387,7 @@ public class MainGame {
 							}
 						} else {
 							System.out.println("You had a near miss with the Hollow Knight's attack, now's your chance!");
-						} if (hollowKnight.lives == 0) {
-							ending = true;
-						}
+						} 
 					}
 
 				} else {
@@ -481,7 +483,7 @@ public class MainGame {
 							+ "To the south, there is a path that has a large gap.To the east there is a opened door ";
 				}
 			}
-			
+
 			if (!inventory.contains(object)) {
 				if (itemMap.get(object).isCarryable) {
 					inventory.add(object);
