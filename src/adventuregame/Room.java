@@ -5,9 +5,9 @@ import java.util.HashMap;
 
 class Room {
 
-	private String title;
-	private String description;	
-	private String N,S,E,W,U,D;
+	String title;
+	String description;	
+	String N,S,E,W,U,D;
 	boolean locked = true;
 	
 	ArrayList<Item> itemList = new ArrayList<Item>();

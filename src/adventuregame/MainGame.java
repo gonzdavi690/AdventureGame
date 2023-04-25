@@ -57,8 +57,6 @@ public class MainGame {
 				player.healthPoints = 3;
 				player.alive = true;
 				lookAtRoom();
-				player.healthPoints = 3;
-				player.alive = true;
 			}
 
 			if (ending) {
@@ -349,7 +347,7 @@ public class MainGame {
 					if (hornet.lives == 0) {
 						player.activeCombat = false;
 						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
-						player.activeCombat = false;
+						
 					}
 					if (player.activeCombat) {
 						
@@ -408,6 +406,9 @@ public class MainGame {
 			if (word2.equals("rock") && currentRoom.equals("Forgotten Crossroads")) {
 				if (itemMap.get(word2).healthPoints == 0) {
 					System.out.println("Wow! There was geo incrusted inside the rock! You gain +100 geo. This is a valuable mineral.");
+					roomMap.get(currentRoom).description = "The streets of Hallownest which were once filled with traffic. Now they seem abandoned and only the ruins remain."
+							+ "To the North, there is a room resembling a large, cracked black egg, looks like something mysterious lies inside."
+							+ "Directly west there is a door which is locked." + "Directly south there is a wall."  + "To the east, a narrow and pitch black passage begins.";
 					if (word2.equals("rock")) {
 						player.geo = 100;
 						inventory.add(player.geo + " geo");
@@ -486,6 +487,9 @@ public class MainGame {
 				if (itemMap.get(object).isCarryable) {
 					inventory.add(object);
 					System.out.println("You are now carrying a " + object + ".");
+					if (object.equals("flashlight")) {
+						itemMap.get("supplies").descr = "Some scattered supplies from previous explorers. Nothing useful remains. ";
+					}
 				} else {
 					System.out.println("This is not carryable.");
 				}				
