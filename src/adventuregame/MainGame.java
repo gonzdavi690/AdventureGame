@@ -1,6 +1,7 @@
 package adventuregame;
 
-//FIXME once you die it thinks you are at spawn and currentroom at the same time.  
+//FIXME once you die it thinks you are at spawn and currentroom at the same time.
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,11 +57,9 @@ public class MainGame {
 				player.healthPoints = 3;
 				player.alive = true;
 				lookAtRoom();
+				player.healthPoints = 3;
+				player.alive = true;
 			}
-
-			//check to see if player has died (in whichever various ways the player can die)
-
-			//check to see if the player has won the game
 
 			if (ending) {
 				System.out.println("As you land a final attack on The Hollow Knight, the infection which it had been carrying for eternity, slowly releases. To prevent the entire kingdom from destrcution, "
@@ -263,7 +262,6 @@ public class MainGame {
 			openDoor(word2);
 			break;
 
-
 			/**** Three word commands****/
 
 		case "turn":
@@ -325,6 +323,7 @@ public class MainGame {
 			}
 		}
 		//TODO Make it so that after you buy the key, the inventory shows you have 0 geo
+		//fixed
 	}
 
 	void sitOnBench() {
@@ -333,6 +332,7 @@ public class MainGame {
 			System.out.println("A much needed rest, thank you! ");
 			player.healthPoints =3;
 			spawn = currentRoom;
+			player.healthPoints = 3;
 		} else {
 			System.out.println("There isn't a bench at this location.");
 		}
@@ -349,9 +349,10 @@ public class MainGame {
 					if (hornet.lives == 0) {
 						player.activeCombat = false;
 						System.out.println("You have defeated the mighty hornet! The cloak is yours to take.");
+						player.activeCombat = false;
 					}
 					if (player.activeCombat) {
-
+						
 						double chance = Math.random();
 
 						if (chance <= 0.33) {
@@ -365,6 +366,7 @@ public class MainGame {
 							System.out.println("You had a near miss with hornet's attack, now's your chance!");
 						} 
 					}
+
 				} else {
 					System.out.println("You can't do that here.");
 				}
@@ -372,14 +374,14 @@ public class MainGame {
 
 			if (word2.equals("hollow")) {
 				if (currentRoom.equals("Temple Of The Black Egg")) {
-					
+
 					//Add stuff here
 					hollowKnight.lives--;
 					if (player.activeCombat) {
-						
+
 						double chance =  Math.random();
-						
-						if (chance <= 0.50) {
+
+						if (chance <= 0.99) {
 							player.healthPoints--;
 							System.out.println("You have been struck!");
 							if (player.healthPoints == 0) {
@@ -392,6 +394,7 @@ public class MainGame {
 							ending = true;
 						}
 					}
+
 				} else {
 					System.out.println("You can't do that here.");
 				}
@@ -473,11 +476,10 @@ public class MainGame {
 				System.out.println("You have to be more specific, which supply do you want to take?");
 			}
 			if (object.equals("cloak")) {
-				if (hornet.lives!=0) {
-				System.out.println("If you want the cloak, you must defeat Hornet. Do you wish to attack now?");
-				return;
-				} 
-				
+				if (hornet.lives != 0) {
+					System.out.println("If you want the cloak, you must defeat Hornet. Do you wish to attack now?");
+					return;
+				} 	
 			}
 
 			if (!inventory.contains(object)) {
